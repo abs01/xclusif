@@ -1,0 +1,102 @@
+{
+  "usuaris": {
+    "usuari": [
+      {
+        "name": "Laura",
+        "lastname": "Arbona",
+        "dni": "18224566K",
+        "phone": "687542163",
+        "email": "marbonas@baleartrek.com",
+        "password": "Lau#8291"
+      },
+      {
+        "name": "Marc",
+        "lastname": "Mesquida",
+        "dni": "472248381H",
+        "phone": "696234561",
+        "email": "bmesquidas@baleartrek.com",
+        "password": "Marc@5512"
+      },
+      {
+        "name": "Clara",
+        "lastname": "Reyes",
+        "dni": "28452716G",
+        "phone": "611203945",
+        "email": "preyesa@baleartrek.com",
+        "password": "Cla$7782"
+      },
+      {
+        "name": "Toni",
+        "lastname": "Reus",
+        "dni": "18364857W",
+        "phone": "693745612",
+        "email": "freusg@baleartrek.com",
+        "password": "Toni#9934"
+      },
+      {
+        "name": "Pau",
+        "lastname": "Horrach",
+        "dni": "24183647K",
+        "phone": "672645319",
+        "email": "jhorrachm@baleartrek.com",
+        "password": "Pau@6671"
+      },
+      {
+        "name": "Xavi",
+        "lastname": "Marimon",
+        "dni": "19263547T",
+        "phone": "690351745",
+        "email": "jmarimonp@baleartrek.com",
+        "password": "Xav!1209"
+      },
+      {
+        "name": "Miquel",
+        "lastname": "Soler",
+        "dni": "44264781X",
+        "phone": "695243815",
+        "email": "fsolerm@baleartrek.com",
+        "password": "Miq#3348"
+      },
+      {
+        "name": "Anna",
+        "lastname": "Weil",
+        "dni": "26351836G",
+        "phone": "684635122",
+        "email": "bweils@baleartrek.com",
+        "password": "Ann@9082"
+      },
+      {
+        "name": "Carlos",
+        "lastname": "Rigo",
+        "dni": "18452745P",
+        "phone": "694725596",
+        "email": "drigoo@baleartrek.com",
+        "password": "Car!5566"
+      },
+      {
+        "name": "Elena",
+        "lastname": "Galmés",
+        "dni": "27183675G",
+        "phone": "675635123",
+        "email": "mgalmess@baleartrek.com",
+        "password": "Ele#4421"
+      },
+      {
+        "name": "David",
+        "lastname": "Vanrell",
+        "dni": "18562438K",
+        "phone": "676897435",
+        "email": "jvanrells@baleartrek.com",
+        "password": "Dav@7813"
+      },
+      {
+        "name": "Alberto",
+        "lastname": "Canosa",
+        "dni": "18452377S",
+        "phone": "677564512",
+        "email": "acanosaa@baleartrek.com",
+        "password": "Ser!6650"
+      }
+    ]
+  }
+}
