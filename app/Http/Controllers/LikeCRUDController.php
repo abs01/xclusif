@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Models\Like;
 use Illuminate\Http\Request;
 use App\Http\Requests\LikeCRUDRequest;
-use Termwind\Components\Li;
 
 class LikeCRUDController extends Controller
 {
