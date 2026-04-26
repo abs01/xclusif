@@ -11,89 +11,133 @@ use App\Http\Resources\UserResource;
 
 class UserController extends Controller
 {
-    /**
-     * Listar todos los usuarios (solo admin)
-     * GET /api/user
+   /**
+     * Display a listing of the resource.
      */
     public function index()
     {
-        // SELECCIÓ DE LES DADES
         $users = User::with(["role"])
                     ->where('status', 'y')
                     ->orderBy('role_id')
                     ->orderBy('id')
-                    ->get();
-        
-        return UserResource::collection($users)->additional(['meta' => 'Usuaris mostrats correctament']);
+                    ->get();        
+        return response()->json([
+            'success' => true,
+            'data' => $users,
+            'message' => 'Users retrieved successfully'
+        ]);
     }
 
     /**
-     * Mostrar un usuario específico
-     * GET /api/user/{user}
+     * Show the form for creating a new resource.
+     */
+    public function create()
+    {
+        return response()->json([
+            'success' => true,
+            'message' => 'Create user form'
+        ]);
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     */
+public function store(UserCRUDRequest $request)
+{
+    $validated = $request->validated();
+
+    $validated['password'] = bcrypt($validated['password']);
+
+    $user = User::create($validated);
+
+    return response()->json([
+        'success' => true,
+        'data' => $user,
+        'message' => 'User created successfully'
+    ], 201);
+}
+
+    /**
+     * Display the specified resource.
      */
     public function show(User $user)
-    {   
-        // Verificar que l'usuari estigui actiu
-        if ($user->status == 'y') {
-            // SELECCIÓ DE LES DADES
-            $user->load(['meeting',
-                         'meetings',
-                         'comments',
-                         'comments.images']);
-            
-            // SELECCIÓ DEL FORMAT DE LA RESPOSTA
-            return (new UserResource($user))->additional(['meta' => 'Usuari mostrat correctament']);
-        } else {
-            return response()->json(['message' => 'Usuari no disponible'], 404);
-        }
-    }
- 
-    /**
-     * Actualizar un usuario
-     * PUT/PATCH /api/user/{user}
-     */
-    public function update(UserCRUDRequest $request, User $user)
     {
-        if ($user->status !== 'y') {
-            return response()->json(['message' => 'Usuari no disponible'], 404);
-        }
-        
-        $user->update($request->all());
-        return (new UserResource($user))->additional(['meta' => 'Usuari modificat correctament']);
+        $user = User::with('tier', 'posts', 'comments', 'likes')->findOrFail($user->id);
+
+        return response()->json([
+            'success' => true,
+            'data' => $user,
+            'message' => 'User retrieved successfully'
+        ]);
     }
 
-    
     /**
-     * Eliminar (desactivar) un usuario
-     * DELETE /api/user/{user}
+     * Show the form for editing the specified resource.
      */
-    public function destroy(User $user)
+    public function edit(string $id)
     {
-        $user_role = Role::where('id', $user->role_id)->value('name');
-        
-        try {
-            $user->status = 'n';
-            
-            if (in_array($user_role, ["admin", "guia"])) {
-                throw (new Exception('Usuari restringit de tipus ' . $user_role));
-            }
-            
-            // Delete comment images
-            foreach ($user->comments as $comment) {
-                $comment->status = 'n';
-                $comment->save();
-            }
-            
-            // Detach permite la desconexión de la tabla meeting_users
-            $user->meetings()->detach();
-            $user->save();
-            
-            return (new UserResource($user))->additional(['meta' => 'Usuari eliminat correctament']);
-        } catch (Exception $e) {
+        $user = User::findOrFail($id);
+
+        return response()->json([
+            'success' => true,
+            'data' => $user,
+            'message' => 'User data for editing'
+        ]);
+    }
+
+    /**
+     * Update the specified resource in storage.
+     */
+public function update(UserCRUDRequest $request, string $id)
+{
+    $user = User::findOrFail($id);
+
+    $validated = $request->validated();
+
+    if (isset($validated['password'])) {
+        $validated['password'] = bcrypt($validated['password']);
+    }
+
+    $user->update($validated);
+
+    return response()->json([
+        'success' => true,
+        'data' => $user,
+        'message' => 'User updated successfully'
+    ]);
+}
+
+//Funcion para verificar si el usuario es premium (tiene tier gold o diamond)
+  public function isTierPremium(string $id){
+        $user = User::findOrFail($id);
+        if($user->tier->name === 'gold' || $user->tier->name === 'diamond'){
             return response()->json([
-                'message' => 'S\'ha produït un error al tractar les dades',
-                'error_details' => $e->getMessage(),
-            ], 400);  
+                'success' => true,
+                'data' => true,
+                'message' => 'User is premium'
+            ]);
         }
+        else{
+            return response()->json([
+                'success' => true,
+                'data' => false,
+                'message' => 'User is not premium'
+            ]);
+        }
+  
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     */
+    public function destroy(string $id)
+    {
+        $user = User::findOrFail($id);
+        $user->delete();
+
+        return response()->json([
+            'success' => true,
+            'message' => 'User deleted successfully'
+        ]);
     }
 }

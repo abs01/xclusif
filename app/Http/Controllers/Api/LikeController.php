@@ -1,12 +1,14 @@
 <?php
 
-namespace App\Http\Controllers;
-
+namespace App\Http\Controllers\Api;
+use App\Http\Controllers\Controller;
 use App\Models\Like;
 use Illuminate\Http\Request;
+
+
 use App\Http\Requests\LikeCRUDRequest;
 
-class LikeCRUDController extends Controller
+class LikeController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -22,12 +24,21 @@ class LikeCRUDController extends Controller
         ]);
     }
 
-    
+    /**
+     * Show the form for creating a new resource.
+     */
+    public function create()
+    {
+        return response()->json([
+            'success' => true,
+            'message' => 'Create like form'
+        ]);
+    }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function create(LikeCRUDRequest $request)
+    public function store(LikeCRUDRequest $request)
     {
         $request->validated();
 
@@ -66,7 +77,40 @@ class LikeCRUDController extends Controller
             'message' => 'Like retrieved successfully'
         ]);
     }
-    
+
+    /**
+     * Show the form for editing the specified resource.
+     */
+    public function edit(string $id)
+    {
+        $like = Like::findOrFail($id);
+
+        return response()->json([
+            'success' => true,
+            'data' => $like,
+            'message' => 'Like data for editing'
+        ]);
+    }
+
+    /**
+     * Update the specified resource in storage.
+     */
+    public function update(LikeCRUDRequest $request, string $id)
+    {
+        $like = Like::findOrFail($id);
+
+        $request->validate();
+
+        $like->fill($request->only(['post_id']));
+        $like->save();
+
+        return response()->json([
+            'success' => true,
+            'data' => $like,
+            'message' => 'Like updated successfully'
+        ]);
+    }
+
     /**
      * Remove the specified resource from storage.
      */

@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use App\Models\Tier;
+
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -42,6 +44,7 @@ class AuthController extends Controller
                 'password' => Hash::make($request->password),
                 'dni' => $request->dni,
                 'role_id' => 3, // Ajusta según tu base de datos (1=admin, 2=guia, 3=user)
+                'tier_id' => Tier::where('name', 'diamond')->value('id'), // Asignar el tier "diamond"
                 'status' => 'y',
             ]);
 
@@ -63,6 +66,7 @@ class AuthController extends Controller
                     'lastname' => $user->lastname,
                     'dni' => $user->dni,
                     'role' => $user->role->name ?? 'user',
+                    'tier' => $user->tier->name ?? 'user',
                     'status' => $user->status,
                 ],
                 'token' => $token,
@@ -135,6 +139,7 @@ class AuthController extends Controller
                     'lastname' => $user->lastname,
                     'dni' => $user->dni,
                     'role' => $user->role->name ?? 'user',
+                    'tier' => $user->tier->name ?? 'user',
                     'status' => $user->status,
                 ],
                 'token' => $token,
