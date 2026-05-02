@@ -24,7 +24,6 @@ class PostCRUDRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'title' => 'required|string|max:255',
             'user_id' => 'required|exists:users,id',
             'content' => 'required|string',
         ];
@@ -35,9 +34,6 @@ class PostCRUDRequest extends FormRequest
         // Mensajes personalizados de error
     public function messages() { 
         return [
-            'title.required' => 'The title is required',
-            'title.string' => 'The title must be a string',
-            'title.max' => 'The title must not exceed 255 characters',
             'user_id.required' => 'The user is required',
             'user_id.exists' => 'The selected user does not exist',
             'content.required' => 'The content is required',

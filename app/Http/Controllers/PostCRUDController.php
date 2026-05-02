@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Post;
+use App\Models\User;
 use Illuminate\Http\Request;
 use App\Http\Requests\PostCRUDRequest;
+use Exception;
 
 class PostCRUDController extends Controller
 {
@@ -13,13 +15,10 @@ class PostCRUDController extends Controller
      */
     public function index()
     {
-        $posts = Post::with(['user', 'comments', 'likes', 'media'])->get();
+        $posts = Post::with(['user'])->paginate(10);
+        $users = User::orderBy('name')->get();
 
-        return response()->json([
-            'success' => true,
-            'data' => $posts,
-            'message' => 'Posts retrieved successfully'
-        ]);
+        return view('posts.index', compact('posts', 'users'));
     }
 
     /**
@@ -27,10 +26,8 @@ class PostCRUDController extends Controller
      */
     public function create()
     {
-        return response()->json([
-            'success' => true,
-            'message' => 'Create post form'
-        ]);
+        $users = User::orderBy('name')->get();
+        return view('posts.create', compact('users'));
     }
 
     /**
@@ -38,72 +35,56 @@ class PostCRUDController extends Controller
      */
     public function store(PostCRUDRequest $request)
     {
+        $validated = $request->validated();
 
-        $post = Post::create($request);
+        $post = Post::create($validated);
 
-        return response()->json([
-            'success' => true,
-            'data' => $post,
-            'message' => 'Post created successfully'
-        ], 201);
+        return redirect()->route('postCRUD.index')->with('success', 'Post created successfully');
     }
   
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(Post $postCRUD)
     {
-        $post = Post::with(['user', 'comments', 'likes', 'media'])->findOrFail($id);
+        $postCRUD->load(['user', 'comments', 'likes', 'media']);
 
-        return response()->json([
-            'success' => true,
-            'data' => $post,
-            'message' => 'Post retrieved successfully'
-        ]);
+        return view('posts.show', compact('postCRUD'));
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(Post $postCRUD)
     {
-        $post = Post::findOrFail($id);
+        $users = User::orderBy('name')->get();
 
-        return response()->json([
-            'success' => true,
-            'data' => $post,
-            'message' => 'Post data for editing'
-        ]);
+        return view('posts.edit', compact('postCRUD', 'users'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(PostCRUDRequest $request, string $id)
+    public function update(PostCRUDRequest $request, Post $postCRUD)
     {
-        $post = Post::findOrFail($id);
         $validated = $request->validated();
 
-        $post->update($validated);
+        $postCRUD->update($validated);
 
-        return response()->json([
-            'success' => true,
-            'data' => $post,
-            'message' => 'Post updated successfully'
-        ]);
+        return redirect()->route('postCRUD.show', $postCRUD)->with('success', 'Post updated successfully');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Post $postCRUD)
     {
-        $post = Post::findOrFail($id);
-        $post->delete();
+        try {
+            $postCRUD->delete();
 
-        return response()->json([
-            'success' => true,
-            'message' => 'Post deleted successfully'
-        ]);
+            return redirect()->route('postCRUD.index')->with('success', 'Post deleted successfully');
+        } catch (Exception $e) {
+            return redirect()->route('postCRUD.index')->with('error', 'Error deleting post: ' . $e->getMessage());
+        }
     }
 }

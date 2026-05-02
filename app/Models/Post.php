@@ -33,4 +33,9 @@ class Post extends Model
     {
         return $this->hasMany(PostMedia::class);
     }
+
+    public function earnings()
+    {
+        return $this->hasMany(Earning::class);
+    }
 }

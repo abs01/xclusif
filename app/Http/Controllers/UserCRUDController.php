@@ -5,6 +5,9 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Http\Request;
 use App\Http\Requests\UserCRUDRequest;
+use App\Models\Role;
+use App\Models\Tier;
+use Exception;
 
 class UserCRUDController extends Controller
 {
@@ -13,16 +16,10 @@ class UserCRUDController extends Controller
      */
     public function index()
     {
-        $users = User::with(["role"])
-                    ->where('status', 'y')
-                    ->orderBy('role_id')
-                    ->orderBy('id')
-                    ->get();        
-        return response()->json([
-            'success' => true,
-            'data' => $users,
-            'message' => 'Users retrieved successfully'
-        ]);
+ $users = User::orderBy('role_id')->orderBy('name')->paginate(10);
+        $roles = Role::orderBy('name')->get();
+
+        return view('users.index', compact('users', 'roles'));
     }
 
     /**
@@ -30,10 +27,10 @@ class UserCRUDController extends Controller
      */
     public function create()
     {
-        return response()->json([
-            'success' => true,
-            'message' => 'Create user form'
-        ]);
+        $roles = Role::all();
+        $tiers = Tier::all();
+        return view('users.create', compact('roles', 'tiers'));
+
     }
 
     /**
@@ -47,25 +44,16 @@ public function store(UserCRUDRequest $request)
 
     $user = User::create($validated);
 
-    return response()->json([
-        'success' => true,
-        'data' => $user,
-        'message' => 'User created successfully'
-    ], 201);
+           return redirect()->route('userCRUD.index')->with('success', 'User created successfully');
+
 }
 
     /**
      * Display the specified resource.
      */
-    public function show(User $user)
+    public function show(User $userCRUD)
     {
-        $user = User::with('tier', 'posts', 'comments', 'likes')->findOrFail($user->id);
-
-        return response()->json([
-            'success' => true,
-            'data' => $user,
-            'message' => 'User retrieved successfully'
-        ]);
+        return view('users.show', compact('userCRUD'));
     }
 
     /**
@@ -97,11 +85,8 @@ public function update(UserCRUDRequest $request, string $id)
 
     $user->update($validated);
 
-    return response()->json([
-        'success' => true,
-        'data' => $user,
-        'message' => 'User updated successfully'
-    ]);
+        return redirect()->route('userCRUD.show', $user)->with('success', 'User updated successfully');
+
 }
 
 //Funcion para verificar si el usuario es premium (tiene tier gold o diamond)
@@ -127,14 +112,33 @@ public function update(UserCRUDRequest $request, string $id)
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+        public function destroy(User $userCRUD)
     {
-        $user = User::findOrFail($id);
-        $user->delete();
+        $user_role = Role::where('id', $userCRUD->role_id)->value('name');
 
-        return response()->json([
-            'success' => true,
-            'message' => 'User deleted successfully'
-        ]);
+        try {
+            if (in_array($user_role, ["admin", "moderator"])) {
+                throw new Exception('Usuario restringido de tipo ' . $user_role);
+            }
+
+            // Soft delete: change status to 'n'
+            $userCRUD->status = 'n';
+
+            // Delete comment images
+            foreach ($userCRUD->comments as $comment) {
+                $comment->status = 'n';
+                $comment->save();
+            }
+
+            // Detach meetings
+            // $userCRUD->meetings()->detach();
+            $userCRUD->followers()->detach();
+            $userCRUD->following()->detach();
+            $userCRUD->save();
+
+            return redirect()->route('userCRUD.index')->with('success', 'User deleted successfully');
+        } catch (Exception $e) {
+            return redirect()->route('userCRUD.index')->with('error', 'Error al eliminar el usuario: ' . $e->getMessage());
+        }
     }
 }

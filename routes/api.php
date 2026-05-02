@@ -4,6 +4,9 @@ use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\PostController;
 use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\Api\FollowerController;
+use App\Http\Controllers\Api\LikeController;
+use App\Http\Controllers\Api\CommentController;
+
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -43,6 +46,8 @@ Route::middleware('MULTI-AUTH')->group(function () {
     Route::apiResource('users', UserController::class)->except('destroy', 'update');
     Route::apiResource('followers', FollowerController::class)->except('index, show');
     Route::apiResource('posts', PostController::class);
+    Route::apiResource('likes', LikeController::class);
+    Route::apiResource('comments', CommentController::class)->except('destroy');
     
     Route::middleware('CHECK-ROLEADMIN')->group(function () {
         Route::get('/followers', [FollowerController::class, 'index']);

@@ -12,8 +12,24 @@
 
                 <!-- Navigation Links -->
                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                    <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
+                      <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                         {{ __('Dashboard') }}
+                    </x-nav-link>
+
+                    <x-nav-link :href="route('userCRUD.index')" :active="request()->routeIs('userCRUD.index')">
+                        {{ __('Users List') }}
+                    </x-nav-link>
+
+                    <x-nav-link :href="route('userCRUD.create')" :active="request()->routeIs('userCRUD.create')">
+                        {{ __('Create User') }}
+                    </x-nav-link>
+
+                    <x-nav-link :href="route('postCRUD.index')" :active="request()->routeIs('postCRUD.index')">
+                        {{ __('Posts List') }}
+                    </x-nav-link>
+
+                    <x-nav-link :href="route('postCRUD.create')" :active="request()->routeIs('postCRUD.create')">
+                        {{ __('Create Post') }}
                     </x-nav-link>
                 </div>
             </div>
@@ -69,6 +85,18 @@
         <div class="pt-2 pb-3 space-y-1">
             <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                 {{ __('Dashboard') }}
+            </x-responsive-nav-link>
+            <x-responsive-nav-link :href="route('userCRUD.index')" :active="request()->routeIs('userCRUD.index')">
+                {{ __('Users List') }}
+            </x-responsive-nav-link>
+            <x-responsive-nav-link :href="route('userCRUD.create')" :active="request()->routeIs('userCRUD.create')">
+                {{ __('Create User') }}
+            </x-responsive-nav-link>
+            <x-responsive-nav-link :href="route('postCRUD.index')" :active="request()->routeIs('postCRUD.index')">
+                {{ __('Posts List') }}
+            </x-responsive-nav-link>
+            <x-responsive-nav-link :href="route('postCRUD.create')" :active="request()->routeIs('postCRUD.create')">
+                {{ __('Create Post') }}
             </x-responsive-nav-link>
         </div>
 

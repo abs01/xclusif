@@ -12,6 +12,10 @@
         <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
 
         <!-- Scripts -->
+        <!-- Scripts -->
+    <link rel="preload" as="style" href="http://blog-app.test/build/assets/app-BFVlPjrh.css" />
+    <link rel="modulepreload" href="http://blog-app.test/build/assets/app-Cy98PJ2n.js" />
+    <link rel="stylesheet" href="http://blog-app.test/build/assets/app-BFVlPjrh.css" />
         @vite(['resources/css/app.css', 'resources/js/app.js'])
     </head>
     <body class="font-sans antialiased">
@@ -29,7 +33,7 @@
 
             <!-- Page Content -->
             <main>
-                {{ $slot }}
+                @yield('content')
             </main>
         </div>
     </body>
