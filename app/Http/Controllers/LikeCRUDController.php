@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Like;
+use App\Models\User;
+use App\Models\Post;
 use Illuminate\Http\Request;
 use App\Http\Requests\LikeCRUDRequest;
 
@@ -11,47 +13,27 @@ class LikeCRUDController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $likes = Like::with(['user', 'post'])->get();
+        $query = Like::with(['user', 'post']);
 
-        return response()->json([
-            'success' => true,
-            'data' => $likes,
-            'message' => 'Likes retrieved successfully'
-        ]);
-    }
-
-    
-
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function create(LikeCRUDRequest $request)
-    {
-        $request->validated();
-
-        $userId = auth()->id();
-
-        if (!$userId) {
-            return response()->json(['success' => false, 'message' => 'Unauthorized'], 401);
+        // Filter by user
+        if ($request->has('user_id') && $request->user_id) {
+            $query->where('user_id', $request->user_id);
         }
 
-        if (Like::where('user_id', $userId)->where('post_id', $request->post_id)->exists()) {
-            return response()->json(['success' => false, 'message' => 'Already liked'], 400);
+        // Filter by post
+        if ($request->has('post_id') && $request->post_id) {
+            $query->where('post_id', $request->post_id);
         }
 
-        $like = Like::create([
-            'user_id' => $userId,
-            'post_id' => $request->post_id,
-        ]);
+        $likes = $query->get();
+        $users = User::all();
+        $posts = Post::all();
 
-        return response()->json([
-            'success' => true,
-            'data' => $like,
-            'message' => 'Like created successfully'
-        ], 201);
+        return view('likes.index', compact('likes', 'users', 'posts'));
     }
+
 
     /**
      * Display the specified resource.
@@ -60,24 +42,8 @@ class LikeCRUDController extends Controller
     {
         $like = Like::with(['user', 'post'])->findOrFail($id);
 
-        return response()->json([
-            'success' => true,
-            'data' => $like,
-            'message' => 'Like retrieved successfully'
-        ]);
+        return view('likes.show', compact('like'));
     }
-    
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        $like = Like::findOrFail($id);
-        $like->delete();
 
-        return response()->json([
-            'success' => true,
-            'message' => 'Like deleted successfully'
-        ]);
-    }
+
 }

@@ -21,14 +21,23 @@ class UserCRUDRequest extends FormRequest
      */
     public function rules(): array
     {
+
+        // Get the user ID from the route for unique ignore on updates
+        $userId = $this->route('user')?->id;
+        $isUpdate = $this->isMethod('PUT') || $this->isMethod('PATCH');
+
         return [
-            'name' => 'required|string|max:255',
+            'name' => $isUpdate ? 'sometimes|string|max:255' : 'required|string|max:255',
             'lastname' => 'required|string|max:255',
-            'dni' => 'required|string|unique:users,dni',
-            'email' => 'required|email|unique:users,email',
+            'dni' =>  $isUpdate ? 'sometimes|nullable|min:5|max:9' . $userId : 'required|min:5|max:9|unique:users,dni,' . $userId,
+            'email' => $isUpdate ? 'sometimes|nullable|email|min:5|max:255' . $userId : 'required|email|min:5|max:255|unique:users,email,' . $userId,
             'phone' => 'nullable|string|max:20',
-            'password' => 'required|string|min:8',
-            'tier_id' => 'required|exists:tiers,id',
+            'password' => $isUpdate
+                ? 'sometimes|nullable|string|min:8|confirmed'
+                : 'required|string|min:8|confirmed',
+            'tier_id' => $isUpdate ? 'sometimes|exists:roles,id' : 'required|exists:roles,id',
+            'role_id' => $isUpdate ? 'sometimes|exists:roles,id' : 'required|exists:roles,id',
+
         ];
     }
 
@@ -60,6 +69,10 @@ class UserCRUDRequest extends FormRequest
 
             'tier_id.required' => 'The tier is required',
             'tier_id.exists' => 'The selected tier does not exist',
+
+            'role_id.required' => 'The role is required',
+            'role_id.exists' => 'The selected role does not exist',
+        
         ];
     }
 }

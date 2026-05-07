@@ -27,8 +27,8 @@ Route::middleware('auth')->group(function () {
         Route::resource('userCRUD', UserCRUDController::class);
         Route::resource('followerCRUD', FollowerCRUDController::class);
         Route::resource('postCRUD', PostCRUDController::class);
-        Route::resource('likeCRUD', LikeCRUDController::class);
-        Route::resource('commentCRUD', CommentCRUDController::class);
+        Route::resource('likeCRUD', LikeCRUDController::class)->except('destroy', 'update', 'edit','create');
+        Route::resource('commentCRUD', CommentCRUDController::class)->except('update', 'edit','create');
 
     });
 });

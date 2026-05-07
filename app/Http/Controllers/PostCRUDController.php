@@ -16,7 +16,7 @@ class PostCRUDController extends Controller
     public function index()
     {
         $posts = Post::with(['user'])->paginate(10);
-        $users = User::orderBy('name')->get();
+        $users = User::orderBy('name','asc')->get();
 
         return view('posts.index', compact('posts', 'users'));
     }
@@ -26,7 +26,7 @@ class PostCRUDController extends Controller
      */
     public function create()
     {
-        $users = User::orderBy('name')->get();
+        $users = User::orderBy('name','asc')->get();
         return view('posts.create', compact('users'));
     }
 
@@ -57,7 +57,7 @@ class PostCRUDController extends Controller
      */
     public function edit(Post $postCRUD)
     {
-        $users = User::orderBy('name')->get();
+        $users = User::orderBy('name','asc')->get();
 
         return view('posts.edit', compact('postCRUD', 'users'));
     }

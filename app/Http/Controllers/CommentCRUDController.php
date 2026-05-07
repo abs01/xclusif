@@ -3,90 +3,65 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\CommentCRUDRequest;
-use App\Http\Resources\CommentResource;
 use App\Models\Comment;
 use App\Models\Post;
-use App\Http\Controllers\Controller;
+use App\Models\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 
 class CommentCRUDController extends Controller
 {
     /**
-     * GET /api/posts/{post}/comments
+     * Display a listing of the resource.
      */
-    public function index(Post $post)
+    public function index(Request $request)
     {
-        $comments = $post->comments()
-            ->with('user')
-            ->orderBy('created_at', 'desc')
-            ->paginate(10);
+        $query = Comment::with(['user', 'post']);
 
-        return CommentResource::collection($comments)
-            ->additional(['meta' => 'Comentarios obtenidos correctamente']);
-    }
-
-    /**
-     * GET /api/comments/{comment}
-     */
-    public function show(Comment $comment)
-    {
-        $comment->load(['user', 'post']);
-
-        return (new CommentResource($comment))
-            ->additional(['meta' => 'Comentario obtenido correctamente']);
-    }
-
-    /**
-     * POST /api/comments
-     */
-    public function store(CommentCRUDRequest $request)
-    {
-        $validated = $request->validated();
-
-        $comment = Comment::create([
-            'content'  => $validated['content'],
-            'user_id'  => Auth::id(),
-            'post_id'  => $validated['post_id'],
-        ]);
-
-        $comment->load(['user', 'post']);
-
-        return (new CommentResource($comment))
-            ->additional(['meta' => 'Comentario creado correctamente']);
-    }
-
-    /**
-     * PUT /api/comments/{comment}
-     */
-    public function update(CommentCRUDRequest $request, Comment $comment)
-    {
-        // Only allow the owner to update
-        if ($comment->user_id !== Auth::id()) {
-            return response()->json(['message' => 'No autorizado'], 403);
+        // Filter by user
+        if ($request->has('user_id') && $request->user_id) {
+            $query->where('user_id', $request->user_id);
         }
 
-        $comment->update($request->validated());
+        // Filter by post
+        if ($request->has('post_id') && $request->post_id) {
+            $query->where('post_id', $request->post_id);
+        }
 
-        $comment->load(['user', 'post']);
+        $comments = $query->orderBy('created_at', 'desc')->get();
+        $users = User::all();
+        $posts = Post::all();
 
-        return (new CommentResource($comment))
-            ->additional(['meta' => 'Comentario actualizado correctamente']);
+        return view('comments.index', compact('comments', 'users', 'posts'));
+    }
+
+ 
+    /**
+     * Display the specified resource.
+     */
+    public function show(Comment $comments)
+    {
+            $comments->load(['user', 'post']);
+        return view('comments.show', compact('comments'));
     }
 
     /**
-     * DELETE /api/comments/{comment}
+     * Show the form for editing the specified resource.
      */
-    public function destroy(Comment $comment)
+
+   
+    /**
+     * Remove the specified resource from storage.
+     */
+    public function destroy(Comment $comments)
     {
-        // Only allow the owner (or admin) to delete
-        if ($comment->user_id !== Auth::id()) {
-            return response()->json(['message' => 'No autorizado'], 403);
+        try {
+            $comments->delete();
+
+            return redirect()->route('commentCRUD.index')
+                ->with('success', 'Comentario eliminado exitosamente');
+        } catch (\Exception $e) {
+            return redirect()->route('commentCRUD.index')
+                ->with('error', 'Error al eliminar el comentario: ' . $e->getMessage());
         }
-
-        $comment->delete();
-
-        return response()->json(['meta' => 'Comentario eliminado correctamente']);
     }
-
 }

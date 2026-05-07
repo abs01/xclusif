@@ -16,8 +16,8 @@ class UserCRUDController extends Controller
      */
     public function index()
     {
- $users = User::orderBy('role_id')->orderBy('name')->paginate(10);
-        $roles = Role::orderBy('name')->get();
+ $users = User::orderBy('role_id','asc')->orderBy('name','asc')->paginate(10);
+        $roles = Role::orderBy('name','asc')->get();
 
         return view('users.index', compact('users', 'roles'));
     }
@@ -59,33 +59,24 @@ public function store(UserCRUDRequest $request)
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(User $userCRUD)
     {
-        $user = User::findOrFail($id);
+        $roles = Role::all();
+        $tiers = Tier::all();
+        return view('users.edit', compact('userCRUD', 'roles', 'tiers'));
 
-        return response()->json([
-            'success' => true,
-            'data' => $user,
-            'message' => 'User data for editing'
-        ]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-public function update(UserCRUDRequest $request, string $id)
+public function update(UserCRUDRequest $request, User $userCRUD)
 {
-    $user = User::findOrFail($id);
+        $validated = $request->validated();
 
-    $validated = $request->validated();
+        $userCRUD->update($validated);
 
-    if (isset($validated['password'])) {
-        $validated['password'] = bcrypt($validated['password']);
-    }
-
-    $user->update($validated);
-
-        return redirect()->route('userCRUD.show', $user)->with('success', 'User updated successfully');
+        return redirect()->route('userCRUD.show', $userCRUD)->with('success', 'User updated successfully');
 
 }
 
