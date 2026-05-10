@@ -3,10 +3,7 @@
 namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Models\Like;
-use Illuminate\Http\Request;
-
-
-use App\Http\Requests\LikeCRUDRequest;
+use App\Http\Requests\LikeApiRequest;
 
 class LikeController extends Controller
 {
@@ -25,24 +22,13 @@ class LikeController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        return response()->json([
-            'success' => true,
-            'message' => 'Create like form'
-        ]);
-    }
-
-    /**
      * Store a newly created resource in storage.
+     * POST /api/likes
+     * body: { "post_id": 1 }
      */
-    public function store(LikeCRUDRequest $request)
+    public function store(LikeApiRequest $request)
     {
-        $request->validated();
-
-        $userId = auth()->id();
+        $userId = auth('sanctum')->id();
 
         if (!$userId) {
             return response()->json(['success' => false, 'message' => 'Unauthorized'], 401);
@@ -79,30 +65,12 @@ class LikeController extends Controller
     }
 
     /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        $like = Like::findOrFail($id);
-
-        return response()->json([
-            'success' => true,
-            'data' => $like,
-            'message' => 'Like data for editing'
-        ]);
-    }
-
-    /**
      * Update the specified resource in storage.
      */
-    public function update(LikeCRUDRequest $request, string $id)
+    public function update(LikeApiRequest $request, string $id)
     {
         $like = Like::findOrFail($id);
-
-        $request->validate();
-
-        $like->fill($request->only(['post_id']));
-        $like->save();
+        $like->update(['post_id' => $request->post_id]);
 
         return response()->json([
             'success' => true,
@@ -125,3 +93,4 @@ class LikeController extends Controller
         ]);
     }
 }
+

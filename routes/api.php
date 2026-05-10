@@ -6,6 +6,7 @@ use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\Api\FollowerController;
 use App\Http\Controllers\Api\LikeController;
 use App\Http\Controllers\Api\CommentController;
+use App\Models\User;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -17,6 +18,11 @@ use Illuminate\Support\Facades\Route;
 
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
+  // Obtener usuario autenticado
+  
+    // Binding de 'user' (debe estar antes de las rutas que lo utilizan)
+
+Route::get('/user/{user}/is_tier_premium', [UserController::class, 'isTierPremium']);
 
 // Route::get('/users/{id}', [UserController::class, 'show']);
 // Route::post('/users', [UserController::class, 'store']);
@@ -48,7 +54,7 @@ Route::middleware('MULTI-AUTH')->group(function () {
     Route::apiResource('posts', PostController::class);
     Route::apiResource('likes', LikeController::class);
     Route::apiResource('comments', CommentController::class)->except('destroy');
-    
+
     Route::middleware('CHECK-ROLEADMIN')->group(function () {
         Route::get('/followers', [FollowerController::class, 'index']);
         Route::put('/users/{id}', [UserController::class, 'update']);

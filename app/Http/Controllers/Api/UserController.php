@@ -113,14 +113,14 @@ public function update(UserCRUDRequest $request, string $id)
         if($user->tier->name === 'gold' || $user->tier->name === 'diamond'){
             return response()->json([
                 'success' => true,
-                'data' => true,
+                'is_premium' => true,
                 'message' => 'User is premium'
             ]);
         }
         else{
             return response()->json([
                 'success' => true,
-                'data' => false,
+                'is_premium' => false,
                 'message' => 'User is not premium'
             ]);
         }

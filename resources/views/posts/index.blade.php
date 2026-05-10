@@ -13,76 +13,17 @@
         </div>
     @endif
 
-    <!-- Search Form -->
-    <div class="bg-white shadow-md rounded-lg p-6 mb-6">
-        <form action="{{ route('postCRUD.index') }}" method="GET" class="space-y-4">
-            <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
-                <!-- Search Input -->
-                <div class="md:col-span-2">
-                    <label for="search" class="block text-sm font-medium text-gray-700 mb-2">
-                        Buscar por contenido
-                    </label>
-                    <input type="text" 
-                           name="search" 
-                           id="search" 
-                           value="{{ request('search') }}"
-                           placeholder="Escribe para buscar..."
-                           class="shadow-sm border border-gray-300 rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
-                </div>
+    
 
-                <!-- User Filter -->
-                <div>
-                    <label for="user_id" class="block text-sm font-medium text-gray-700 mb-2">
-                        Filtrar por usuario
-                    </label>
-                    <select name="user_id" 
-                            id="user_id" 
-                            class="shadow-sm border border-gray-300 rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent">
-                        <option value="">Todos los usuarios</option>
-                        @if(isset($users))
-                            @foreach($users as $user)
-                                <option value="{{ $user->id }}" {{ request('user_id') == $user->id ? 'selected' : '' }}>
-                                    {{ $user->name }}
-                                </option>
-                            @endforeach
-                        @endif
-                    </select>
-                </div>
-            </div>
-
-            <!-- Buttons -->
-            <div class="flex gap-2">
-                <button type="submit" 
-                        class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
-                    Buscar
-                </button>
-                
-                @if(request()->hasAny(['search', 'user_id']))
-                    <a href="{{ route('postCRUD.index') }}" 
-                       class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
-                        Limpiar filtros
-                    </a>
-                @endif
-            </div>
-        </form>
-    </div>
-
-    <!-- Results Count -->
-    @if(request()->hasAny(['search', 'user_id']))
-        <div class="mb-4 text-gray-600">
-            <strong>{{ $posts->total() }}</strong> post(s) encontrado(s)
-        </div>
-    @endif
-
-    <!-- Posts Grid -->
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+    <!-- Posts List -->
+    <div class="grid gap-0 bg-white">
         @forelse($posts as $post)
-            <x-card-post :post="$post" />
+            @each('components.card-post',$posts,'post')
         @empty
-            <div class="col-span-full bg-white shadow-md rounded-lg p-8 text-center">
-                <p class="text-gray-500">No se encontraron posts</p>
+            <div class="bg-white shadow-md rounded-lg p-8 text-center">
+                <p class="mt-4 text-gray-500">No se encontraron posts</p>
                 @if(request()->hasAny(['search', 'user_id']))
-                    <a href="{{ route('postCRUD.index') }}" class="mt-4 inline-block text-blue-500 hover:text-blue-700">
+                    <a href="{{ route('postCRUD.index') }}" class="mt-2 inline-block text-blue-500 hover:text-blue-700">
                         Ver todos los posts
                     </a>
                 @endif

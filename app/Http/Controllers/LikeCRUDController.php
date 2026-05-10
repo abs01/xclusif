@@ -6,7 +6,6 @@ use App\Models\Like;
 use App\Models\User;
 use App\Models\Post;
 use Illuminate\Http\Request;
-use App\Http\Requests\LikeCRUDRequest;
 
 class LikeCRUDController extends Controller
 {
@@ -27,11 +26,9 @@ class LikeCRUDController extends Controller
             $query->where('post_id', $request->post_id);
         }
 
-        $likes = $query->get();
-        $users = User::all();
-        $posts = Post::all();
+        $likes = $query->paginate(10);
 
-        return view('likes.index', compact('likes', 'users', 'posts'));
+        return view('likes.index', compact('likes'));
     }
 
 

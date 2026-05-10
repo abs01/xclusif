@@ -27,11 +27,9 @@ class CommentCRUDController extends Controller
             $query->where('post_id', $request->post_id);
         }
 
-        $comments = $query->orderBy('created_at', 'desc')->get();
-        $users = User::all();
-        $posts = Post::all();
+        $comments = $query->orderBy('created_at', 'desc')->paginate(10);
 
-        return view('comments.index', compact('comments', 'users', 'posts'));
+        return view('comments.index', compact('comments'));
     }
 
  

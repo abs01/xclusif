@@ -87,14 +87,14 @@ public function update(UserCRUDRequest $request, User $userCRUD)
             return response()->json([
                 'success' => true,
                 'data' => true,
-                'message' => 'User is premium'
+                'message' => "User is premium {$user->tier->name}"
             ]);
         }
         else{
             return response()->json([
                 'success' => true,
                 'data' => false,
-                'message' => 'User is not premium'
+                'message' => "User is not premium {$user->tier->name}"
             ]);
         }
   
