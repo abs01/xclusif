@@ -26,15 +26,20 @@ class DatabaseSeeder extends Seeder
                 'user_id' => $user->id
             ]);
 
+            // Crear comentarios para cada post
             foreach ($posts as $post) {
-
-                Comment::factory(rand(1,3))->create([
-                    'post_id' => $post->id,
-                    'user_id' => $user->id
-                ]);
-            }
-
-            foreach ($posts as $post) {
+                $commentsCount = rand(1,5);
+                for ($i = 0; $i < $commentsCount; $i++) {
+                    // Obtener un usuario diferente al del post
+                    $commentUser = User::where('id', '!=', $post->user_id)->inRandomOrder()->first();
+                    if ($commentUser) {
+                        Comment::factory()->create([
+                            'post_id' => $post->id,
+                            'user_id' => $commentUser->id
+                        ]);
+                    }
+                }
+                
                 $likesCount = rand(1,2);
                 for ($i = 0; $i < $likesCount; $i++) {
                     Like::firstOrCreate([

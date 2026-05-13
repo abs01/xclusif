@@ -81,6 +81,7 @@ class LikeController extends Controller
 
     /**
      * Remove the specified resource from storage.
+     * DELETE /api/likes/{id}
      */
     public function destroy(string $id)
     {
