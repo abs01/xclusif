@@ -49,16 +49,21 @@ Route::get('/user/{user}/is_tier_premium', [UserController::class, 'isTierPremiu
 
 Route::middleware('MULTI-AUTH')->group(function () {
     Route::post('/logout', [AuthController::class, 'logout']);
-    Route::apiResource('users', UserController::class)->except('destroy', 'update');
-    Route::apiResource('followers', FollowerController::class)->except('index, show');
+    
+    // Users routes
+    Route::get('/users', [UserController::class, 'index']);
+    Route::post('/users', [UserController::class, 'store']);
+    Route::get('/users/{user}', [UserController::class, 'show']);
+    
+    Route::apiResource('followers', FollowerController::class)->except(['index', 'show']);
     Route::apiResource('posts', PostController::class);
     Route::apiResource('likes', LikeController::class);
-    Route::apiResource('comments', CommentController::class)->except('destroy');
+    Route::apiResource('comments', CommentController::class)->except(['destroy']);
 
     Route::middleware('CHECK-ROLEADMIN')->group(function () {
+        Route::put('/users/{user}', [UserController::class, 'update']);
+        Route::delete('/users/{user}', [UserController::class, 'destroy']);
         Route::get('/followers', [FollowerController::class, 'index']);
-        Route::put('/users/{id}', [UserController::class, 'update']);
-        Route::delete('/users/{id}', [UserController::class, 'destroy']);
         Route::get('/followers/{id}', [FollowerController::class, 'show']);
     });
 });

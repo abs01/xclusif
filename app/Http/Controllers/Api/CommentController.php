@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Http\Requests\CommentCRUDRequest;
+use App\Http\Requests\CommentApiRequest;
 use App\Http\Resources\CommentResource;
 use App\Models\Comment;
 use App\Models\Post;
@@ -40,13 +40,14 @@ class CommentController extends Controller
     /**
      * POST /api/comments
      */
-    public function store(CommentCRUDRequest $request)
+    public function store(CommentApiRequest $request)
     {
         $validated = $request->validated();
+        $userId = auth('sanctum')->id();
 
         $comment = Comment::create([
             'content'  => $validated['content'],
-            'user_id'  => Auth::id(),
+            'user_id'  => $userId,
             'post_id'  => $validated['post_id'],
         ]);
 
@@ -59,10 +60,11 @@ class CommentController extends Controller
     /**
      * PUT /api/comments/{comment}
      */
-    public function update(CommentCRUDRequest $request, Comment $comment)
+    public function update(CommentApiRequest $request, Comment $comment)
     {
         // Only allow the owner to update
-        if ($comment->user_id !== Auth::id()) {
+        $userId = auth('sanctum')->id();
+        if ($comment->user_id !== $userId) {
             return response()->json(['message' => 'No autorizado'], 403);
         }
 
@@ -80,7 +82,8 @@ class CommentController extends Controller
     public function destroy(Comment $comment)
     {
         // Only allow the owner (or admin) to delete
-        if ($comment->user_id !== Auth::id()) {
+        $userId = auth('sanctum')->id();
+        if ($comment->user_id !== $userId) {
             return response()->json(['message' => 'No autorizado'], 403);
         }
 

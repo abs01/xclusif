@@ -8,7 +8,7 @@ use App\Http\Controllers\UserCRUDController;
 use App\Http\Controllers\CommentCRUDController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
-
+use App\Http\Controllers\EarningCRUDController;
 Route::get('/', function () {
     return view('welcome');
 });
@@ -29,7 +29,7 @@ Route::middleware('auth')->group(function () {
         Route::resource('postCRUD', PostCRUDController::class);
         Route::resource('likeCRUD', LikeCRUDController::class)->except('destroy', 'update', 'edit','create');
         Route::resource('commentCRUD', CommentCRUDController::class)->except('update', 'edit','create');
-
+        Route::resource('earningCRUD', EarningCRUDController::class)->except('update', 'edit','create','destroy');
     });
 });
 

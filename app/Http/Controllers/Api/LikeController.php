@@ -20,6 +20,7 @@ class LikeController extends Controller
             'message' => 'Likes retrieved successfully'
         ]);
     }
+    
 
     /**
      * Store a newly created resource in storage.

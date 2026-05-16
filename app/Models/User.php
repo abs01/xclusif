@@ -19,15 +19,16 @@ class User extends Authenticatable
     use HasFactory, Notifiable, HasApiTokens;
 
 
-    protected $fillable = [
-        'name',
-        'lastname',
-        'dni',
-        'email',
-        'phone',
-        'password',
-        'tier_id',
-    ];
+protected $fillable = [
+    'name',
+    'lastname',
+    'dni',
+    'email',
+    'phone',
+    'password',
+    'tier_id',
+    'role_id', 
+];
 
 
     public function tier()
@@ -77,6 +78,11 @@ class User extends Authenticatable
         public function isAdmin(): bool
     {
         return $this->role_id === Role::where('name', 'admin')->first()?->id;
+    }
+
+      public function isMod(): bool
+    {
+        return $this->role_id === Role::where('name', 'moderador')->first()?->id;
     }
 
 }

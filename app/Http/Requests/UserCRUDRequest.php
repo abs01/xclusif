@@ -23,20 +23,21 @@ class UserCRUDRequest extends FormRequest
     {
 
         // Get the user ID from the route for unique ignore on updates
-        $userId = $this->route('user')?->id;
+        //Error attempt to read property "id on string"
+        $userId = $this->route('user') ? $this->route('user')->id : null;
         $isUpdate = $this->isMethod('PUT') || $this->isMethod('PATCH');
 
         return [
             'name' => $isUpdate ? 'sometimes|string|max:255' : 'required|string|max:255',
-            'lastname' => 'required|string|max:255',
-            'dni' =>  $isUpdate ? 'sometimes|nullable|min:5|max:9' . $userId : 'required|min:5|max:9|unique:users,dni,' . $userId,
-            'email' => $isUpdate ? 'sometimes|nullable|email|min:5|max:255' . $userId : 'required|email|min:5|max:255|unique:users,email,' . $userId,
+            'lastname' => $isUpdate ? 'sometimes|string|max:255' : 'required|string|max:255',
+            'dni' =>  $isUpdate ? 'sometimes|nullable|min:5|max:9|unique:users,dni,' . $userId : 'required|min:5|max:9|unique:users,dni',
+            'email' => $isUpdate ? 'sometimes|nullable|email|min:5|max:255|unique:users,email,' . $userId : 'required|email|min:5|max:255|unique:users,email',
             'phone' => 'nullable|string|max:20',
             'password' => $isUpdate
                 ? 'sometimes|nullable|string|min:8|confirmed'
                 : 'required|string|min:8|confirmed',
-            'tier_id' => $isUpdate ? 'sometimes|exists:roles,id' : 'required|exists:roles,id',
-            'role_id' => $isUpdate ? 'sometimes|exists:roles,id' : 'required|exists:roles,id',
+            'tier_id' => $isUpdate ? 'sometimes|exists:tiers,id' : 'nullable|exists:tiers,id',
+            'role_id' => $isUpdate ? 'sometimes|exists:roles,id' : 'nullable|exists:roles,id',
 
         ];
     }

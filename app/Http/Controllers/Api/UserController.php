@@ -5,9 +5,9 @@ namespace App\Http\Controllers\Api;
 use Exception;
 use App\Models\Role;
 use App\Models\User;
-use App\Http\Requests\UserCRUDRequest;
-use App\Http\Controllers\Controller;
+use App\Http\Requests\UserApiRequest;
 use App\Http\Resources\UserResource;
+use App\Http\Controllers\Controller;
 
 class UserController extends Controller
 {
@@ -16,6 +16,7 @@ class UserController extends Controller
      */
     public function index()
     {
+
         $users = User::with(["role"])
                     ->where('status', 'y')
                     ->orderBy('role_id')
@@ -39,23 +40,6 @@ class UserController extends Controller
         ]);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-public function store(UserCRUDRequest $request)
-{
-    $validated = $request->validated();
-
-    $validated['password'] = bcrypt($validated['password']);
-
-    $user = User::create($validated);
-
-    return response()->json([
-        'success' => true,
-        'data' => $user,
-        'message' => 'User created successfully'
-    ], 201);
-}
 
     /**
      * Display the specified resource.
@@ -88,28 +72,29 @@ public function store(UserCRUDRequest $request)
     /**
      * Update the specified resource in storage.
      */
-public function update(UserCRUDRequest $request, string $id)
+public function update(UserApiRequest $request, User $user) // ← User model binding, not string
 {
-    $user = User::findOrFail($id);
 
     $validated = $request->validated();
 
-    if (isset($validated['password'])) {
+    if (!empty($validated['password'])) {
         $validated['password'] = bcrypt($validated['password']);
+    } else {
+        unset($validated['password']);           
+        unset($validated['password_confirmation']);
     }
 
     $user->update($validated);
 
     return response()->json([
         'success' => true,
-        'data' => $user,
+        'data'    => $user,
         'message' => 'User updated successfully'
     ]);
 }
 
 //Funcion para verificar si el usuario es premium (tiene tier gold o diamond)
-  public function isTierPremium(string $id){
-        $user = User::findOrFail($id);
+  public function isTierPremium(User $user){
         if($user->tier->name === 'gold' || $user->tier->name === 'diamond'){
             return response()->json([
                 'success' => true,
@@ -130,14 +115,33 @@ public function update(UserCRUDRequest $request, string $id)
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(User $user)
     {
-        $user = User::findOrFail($id);
-        $user->delete();
+        $user_role = Role::where('id', $user->role_id)->value('name');
 
-        return response()->json([
-            'success' => true,
-            'message' => 'User deleted successfully'
-        ]);
+        try {
+            if (in_array($user_role, ["admin", "moderator"])) {
+                throw new Exception('Usuario restringido de tipo ' . $user_role);
+            }
+
+            // Soft delete: change status to 'n'
+            $user->status = 'n';
+
+            // Delete comment images
+            foreach ($user->comments as $comment) {
+                $comment->status = 'n';
+                $comment->save();
+            }
+
+            // Detach meetings
+            // $user->meetings()->detach();
+            $user->followers()->detach();
+            $user->following()->detach();
+            $user->save();
+
+            return redirect()->route('userCRUD.index')->with('success', 'User deleted successfully');
+        } catch (Exception $e) {
+            return redirect()->route('userCRUD.index')->with('error', 'Error al eliminar el usuario: ' . $e->getMessage());
+        }
     }
 }
