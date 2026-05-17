@@ -115,12 +115,7 @@ public function update(UserCRUDRequest $request, User $userCRUD)
             // Soft delete: change status to 'n'
             $userCRUD->status = 'n';
 
-            // Delete comment images
-            foreach ($userCRUD->comments as $comment) {
-                $comment->status = 'n';
-                $comment->save();
-            }
-
+            
             // Detach meetings
             // $userCRUD->meetings()->detach();
             $userCRUD->followers()->detach();

@@ -7,9 +7,9 @@
         <p class="mb-4 text-base line-clamp-3">{!! Str::limit($post->content, 100) !!}</p>
         <p class="mb-4 text-sm">created at: {{ $post->created_at->format('M d, Y H:i') }}</p>
         <p class="mb-4 text-sm">updated at: {{ $post->updated_at->format('M d, Y H:i') }}</p>
-         @if ($post->media->isNotEmpty())
+         @if ($post->media)
             <p class="mb-4 text-sm">Imagen asociada al Post: 
-                <a href="{{ asset('images/' . $post->media->first()->file_path) }}" class="text-blue-600 hover:text-blue-800 underline">{{ $post->media->first()->file_path }}</a>
+                <a href="{{ asset('images/' . $post->media->file_path) }}" class="text-blue-600 hover:text-blue-800 underline">{{ $post->media->first()->file_path }}</a>
             </p>
         @endif
        
