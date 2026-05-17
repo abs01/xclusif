@@ -79,38 +79,5 @@ class UserApiRequest extends FormRequest
         );
     }
 
-    /**
-     * Custom error messages.
-     */
-    public function messages(): array
-    {
-        return [
-            'name.required'      => 'The name is required',
-            'name.string'        => 'The name must be a string',
-            'name.max'           => 'The name must not exceed 255 characters',
 
-            'lastname.required'  => 'The lastname is required',
-            'lastname.string'    => 'The lastname must be a string',
-            'lastname.max'       => 'The lastname must not exceed 255 characters',
-
-            'dni.required'       => 'The DNI is required',
-            'dni.min'            => 'The DNI must be at least 5 characters',
-            'dni.max'            => 'The DNI must not exceed 9 characters',
-            'dni.unique'         => 'This DNI is already registered',
-
-            'email.required'     => 'The email is required',
-            'email.email'        => 'The email must be a valid address',
-            'email.unique'       => 'This email is already registered',
-
-            'phone.string'       => 'The phone must be a string',
-            'phone.max'          => 'The phone must not exceed 20 characters',
-
-            'password.required'  => 'The password is required',
-            'password.min'       => 'The password must be at least 8 characters',
-            'password.confirmed' => 'The passwords do not match',
-
-            'tier_id.exists'     => 'The selected tier does not exist',
-            'role_id.exists'     => 'The selected role does not exist',
-        ];
-    }
 }

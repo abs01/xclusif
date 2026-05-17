@@ -13,5 +13,8 @@
     </div>
 
     <x-card-post :post="$postCRUD" />
+          @if ($postCRUD->media->isNotEmpty())
+            <img src="{{ asset('images/' . $postCRUD->media->first()->file_path) }}" alt="Post Media" class="w-full h-auto rounded mb-4">
+        @endif
 </div>
 @endsection

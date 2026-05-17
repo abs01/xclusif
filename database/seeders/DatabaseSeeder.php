@@ -6,6 +6,7 @@ use App\Models\Comment;
 use App\Models\Like;
 use App\Models\Post;
 use App\Models\User;
+use App\Models\PostMedia;
 use Exception;
 use Illuminate\Database\Seeder;
 
@@ -47,6 +48,18 @@ class DatabaseSeeder extends Seeder
                         'user_id' => $usersIds->random(),
                     ]);
                 }
+
+                // Crear media para cada post
+                $mediaCount = rand(1,3);
+
+                if ($mediaCount == 3) {
+                    PostMedia::factory()->create([
+                        'post_id' => $post->id,
+                        'file_path' => fake()->numberBetween(1, 4) . '.jpg',
+                        'type' => 'image'
+                    ]);
+                }
+
             }
         }
 

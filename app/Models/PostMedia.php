@@ -16,4 +16,9 @@ class PostMedia extends Model
         'file_path',
         'type'
     ];
+
+    public function post()
+    {
+        return $this->belongsTo(Post::class);
+    }
 }
