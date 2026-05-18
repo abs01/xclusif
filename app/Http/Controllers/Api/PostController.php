@@ -2,9 +2,12 @@
 
 namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
-use App\Models\Post;
-use Illuminate\Http\Request;
+use App\Http\Requests\GuardarImagenRequest;
 use App\Http\Requests\PostCRUDRequest;
+use App\Models\Post;
+use App\Models\PostMedia;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\File;
 
 class PostController extends Controller
 {
@@ -38,8 +41,21 @@ class PostController extends Controller
      */
     public function store(PostCRUDRequest $request)
     {
+        $validated = $request->validated();
+        $validated['user_id'] = auth('sanctum')->id();
 
-        $post = Post::create($request);
+        $post = Post::create($validated);
+
+        if ($request->hasFile('media')) {
+            foreach ($request->file('media') as $file) {
+                $path = $file->store('post_media', 'public/images');
+
+                PostMedia::create([
+                    'post_id' => $post->id,
+                    'media_path' => $path,
+                ]);
+            }
+        }
 
         return response()->json([
             'success' => true,
@@ -92,6 +108,51 @@ class PostController extends Controller
             'message' => 'Post updated successfully'
         ]);
     }
+  
+    /**
+     * Store an image for the specified resource.
+     */
+  public function image(GuardarImagenRequest $request, Post $post)
+{
+try {
+    $file = $request->file('file_path');
+    $filename = time() . '.' . $file->extension();
+    $file->move(public_path('images'), $filename);
+
+    $media = PostMedia::create([
+        'file_path' => $filename,
+        'post_id'   => $post->id,
+    ]);
+
+    return response()->json([
+        'success' => true,
+        'data'    => $media,
+        'message' => 'Imagen subida correctamente'
+    ], 201);
+} catch (\Exception $e) {
+    return response()->json([
+        'success' => false,
+        'message' => 'Error uploading image: ' . $e->getMessage()
+    ], 500);
+}
+} 
+/**
+     * Remove an image from storage.
+     */
+  public function destroyImage(PostMedia $media)
+{
+    $mediaPath = public_path('images/' . $media->file_path);
+    if (File::exists($mediaPath)) {
+        File::delete($mediaPath);
+    }
+
+    $media->delete();
+
+    return response()->json([
+        'success' => true,
+        'message' => 'Imagen eliminada correctamente'
+    ]);
+}
 
     /**
      * Remove the specified resource from storage.

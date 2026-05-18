@@ -59,7 +59,9 @@ Route::middleware('MULTI-AUTH')->group(function () {
     Route::apiResource('posts', PostController::class);
     Route::apiResource('likes', LikeController::class);
     Route::apiResource('comments', CommentController::class)->except(['destroy']);
-
+    Route::post('/posts/{post}/image', [PostController::class, 'image']);
+    Route::delete('/posts/media/{media}', [PostController::class, 'destroyImage']);
+    
     Route::middleware('CHECK-ROLEADMIN')->group(function () {
         Route::put('/users/{user}', [UserController::class, 'update']);
         Route::delete('/users/{user}', [UserController::class, 'destroy']);
