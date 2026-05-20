@@ -108,7 +108,7 @@ public function update(UserCRUDRequest $request, User $userCRUD)
         $user_role = Role::where('id', $userCRUD->role_id)->value('name');
 
         try {
-            if (in_array($user_role, ["admin", "moderator"])) {
+            if (in_array($user_role, ["admin", "moderador"])) {
                 throw new Exception('Usuario restringido de tipo ' . $user_role);
             }
 

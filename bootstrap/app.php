@@ -20,6 +20,7 @@ return Application::configure(basePath: dirname(__DIR__))
         // Registrar middleware personalitzat
         $middleware->alias([
             'CHECK-ROLEADMIN' => \App\Http\Middleware\CheckRoleAdmin::class,  // 'CHECK-ROLEADMIN' és l'alias del middleware
+            'CHECK-ROLEMOD' => \App\Http\Middleware\CheckRoleMod::class,  // 'CHECK-ROLEMOD' és l'alias del middleware
             'API-KEY' => \App\Http\Middleware\ApiKeyMiddleware::class,  // 'API-KEY' és l'alias del middleware
             'MULTI-AUTH' => \App\Http\Middleware\MultiAuthMiddleware::class,  // 'MULTI-AUTH' és l'alias del middleware
         ]);

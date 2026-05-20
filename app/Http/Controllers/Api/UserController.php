@@ -120,7 +120,7 @@ public function update(UserApiRequest $request, User $user) // ← User model bi
         $user_role = Role::where('id', $user->role_id)->value('name');
 
         try {
-            if (in_array($user_role, ["admin", "moderator"])) {
+            if (in_array($user_role, ["admin", "moderador"])) {
                 throw new Exception('Usuario restringido de tipo ' . $user_role);
             }
 

@@ -22,13 +22,16 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    Route::middleware('CHECK-ROLEMOD')->group(function () {
+        Route::resource('followerCRUD', FollowerCRUDController::class);
+        Route::resource('likeCRUD', LikeCRUDController::class);
+        Route::resource('postCRUD', PostCRUDController::class);
+        Route::resource('commentCRUD', CommentCRUDController::class)->except('update', 'edit','create');
 
+    });
     Route::middleware('CHECK-ROLEADMIN')->group(function () {
         Route::resource('userCRUD', UserCRUDController::class);
-        Route::resource('followerCRUD', FollowerCRUDController::class);
-        Route::resource('postCRUD', PostCRUDController::class);
-        Route::resource('likeCRUD', LikeCRUDController::class)->except('destroy', 'update', 'edit','create');
-        Route::resource('commentCRUD', CommentCRUDController::class)->except('update', 'edit','create');
+ 
         Route::resource('earningCRUD', EarningCRUDController::class)->except('update', 'edit','create','destroy');
     });
 });

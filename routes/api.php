@@ -58,7 +58,7 @@ Route::middleware('MULTI-AUTH')->group(function () {
     Route::apiResource('followers', FollowerController::class)->except(['index', 'show']);
     Route::apiResource('posts', PostController::class);
     Route::apiResource('likes', LikeController::class);
-    Route::apiResource('comments', CommentController::class)->except(['destroy']);
+    Route::apiResource('comments', CommentController::class);
     Route::post('/posts/{post}/image', [PostController::class, 'image']);
     Route::delete('/posts/media/{media}', [PostController::class, 'destroyImage']);
     

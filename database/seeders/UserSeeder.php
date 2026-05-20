@@ -44,7 +44,7 @@ class UserSeeder extends Seeder
                 'email'     => $usuari['email'],
                 'email_verified_at' => now(),
                 'phone'     => $usuari['phone'],
-                'password'  => Hash::make('12345678'),
+                'password'  => Hash::make($usuari['password']),
                 'role_id'   => $gestorRole,
                 'tier_id'   => $tierRole,
             ]);
