@@ -19,8 +19,8 @@ class FollowerFactory extends Factory
     public function definition(): array
     {
              return [
-            'follower_id' => User::factory(),
-            'following_id' => User::factory(),
+            'follower_id' => User::pluck('id')->random(),
+            'following_id' => User::pluck('id')->random(),
             'is_vip' => fake()->boolean(20)
 
             ];

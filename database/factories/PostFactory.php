@@ -10,7 +10,7 @@ class PostFactory extends Factory
     public function definition(): array
     {
         return [
-            'user_id' => User::factory(),
+            'user_id' => User::pluck('id')->random(),
             'content' => fake()->paragraph()
         ];
     }

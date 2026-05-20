@@ -14,7 +14,7 @@ class PostMediaFactory extends Factory
         
         return [
             'file_path' => $imageNumber . '.jpg',
-            'post_id' => Post::inRandomOrder()->value('id') ?? Post::factory(),
+            'post_id' => Post::pluck('id')->random(),
             'type' => 'image',
             'created_at' => now(),
             'updated_at' => now(),

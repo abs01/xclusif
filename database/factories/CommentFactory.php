@@ -10,7 +10,7 @@ class CommentFactory extends Factory
 {
     public function definition(): array
     {
-        $post = Post::factory()->create();
+        $post = Post::find(Post::pluck('id')->random());
         
         // Obtener o crear un usuario que no sea el del post
         $user = User::whereNotIn('id', [$post->user_id])->first();

@@ -18,18 +18,21 @@ class DatabaseSeeder extends Seeder
         $this->call(RoleSeeder::class);
         $this->call(UserSeeder::class);
 
-        $users = User::factory(100)->create();
+        $users = User::factory(20)->create();
             $usersIds = User::pluck('id');
+         
+         $posts = Post::factory(20)->create();
+                                 $randomValue = rand(1,5);
 
         foreach ($users as $user) {
 
-            $posts = Post::factory(rand(1,5))->create([
-                'user_id' => $user->id
-            ]);
+           
 
             // Crear comentarios para cada post
             foreach ($posts as $post) {
-                $commentsCount = rand(1,5);
+                $commentsCount = rand(1,2);
+                $commentChance = rand(1,5);
+                if ($commentChance == $randomValue) { 
                 for ($i = 0; $i < $commentsCount; $i++) {
                     // Obtener un usuario diferente al del post
                     $commentUser = User::where('id', '!=', $post->user_id)->inRandomOrder()->first();
@@ -39,15 +42,18 @@ class DatabaseSeeder extends Seeder
                             'user_id' => $commentUser->id
                         ]);
                     }
-                }
+                }}
                 
-                $likesCount = rand(1,2);
+                $likesCount = rand(1,5);
+                                $likeChance = rand(1,5);
+                 if ($likeChance == $randomValue) {
                 for ($i = 0; $i < $likesCount; $i++) {
+               
                     Like::firstOrCreate([
                         'post_id' => $post->id,
                         'user_id' => $usersIds->random(),
                     ]);
-                }
+                }}
 
                 // Crear media para cada post
                 $mediaCount = rand(1,3);

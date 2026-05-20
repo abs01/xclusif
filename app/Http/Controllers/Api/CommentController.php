@@ -60,6 +60,7 @@ class CommentController extends Controller
     /**
      * PUT /api/comments/{comment}
      */
+    // content, post_id  
     public function update(CommentApiRequest $request, Comment $comment)
     {
         // Only allow the owner to update

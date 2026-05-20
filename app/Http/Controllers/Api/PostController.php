@@ -16,7 +16,7 @@ class PostController extends Controller
      */
     public function index()
     {
-        $posts = Post::with(['user', 'comments', 'likes', 'media'])->get();
+        $posts = Post::orderBy('created_at', 'desc')->with(['user', 'comments', 'likes', 'media'])->get();
 
         return response()->json([
             'success' => true,

@@ -26,7 +26,7 @@ return Application::configure(basePath: dirname(__DIR__))
         ]);
 
         // Aplicar middleware específic per a API
-        $middleware->api('throttle:60,1');  // aplica "rate limiting" (60 requests per minut)
+        $middleware->api('throttle:200,1');  // aplica "rate limiting" (200 requests per minut)
     })
     ->withExceptions(function (Exceptions $exceptions) {
         // Manejar excepcions per a rutes API
