@@ -55,17 +55,16 @@ Route::middleware('MULTI-AUTH')->group(function () {
     Route::post('/users', [UserController::class, 'store']);
     Route::get('/users/{user}', [UserController::class, 'show']);
     
-    Route::apiResource('followers', FollowerController::class)->except(['index', 'show']);
     Route::apiResource('posts', PostController::class);
     Route::apiResource('likes', LikeController::class);
     Route::apiResource('comments', CommentController::class);
+    Route::apiResource('followers', FollowerController::class);
+
     Route::post('/posts/{post}/image', [PostController::class, 'image']);
     Route::delete('/posts/media/{media}', [PostController::class, 'destroyImage']);
     
     Route::middleware('CHECK-ROLEADMIN')->group(function () {
         Route::put('/users/{user}', [UserController::class, 'update']);
         Route::delete('/users/{user}', [UserController::class, 'destroy']);
-        Route::get('/followers', [FollowerController::class, 'index']);
-        Route::get('/followers/{id}', [FollowerController::class, 'show']);
     });
 });

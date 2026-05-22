@@ -99,16 +99,22 @@ class FollowerController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
-    {
-        $user = auth('sanctum')->user();
-        if (!$user) {
-            return response()->json(['success' => false, 'message' => 'Unauthorized'], 401);
-        }
-        $user->following()->detach($id);
+public function destroy(string $id)
+{
+    $user = auth('sanctum')->user();
+
+    if (!$user) {
         return response()->json([
-            'success' => true,
-            'message' => 'Unfollowed successfully'
-        ]);
+            'success' => false,
+            'message' => 'Unauthorized'
+        ], 401);
     }
+
+    $user->following()->detach($id);
+
+    return response()->json([
+        'success' => true,
+        'message' => 'Unfollowed successfully'
+    ]);
+}
 }
