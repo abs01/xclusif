@@ -7,10 +7,8 @@ use App\Http\Controllers\Api\FollowerController;
 use App\Http\Controllers\Api\LikeController;
 use App\Http\Controllers\Api\CommentController;
 use App\Models\User;
-
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-
 
 // ========================================
 // RUTAS PÚBLICAS (sin autenticación)
@@ -19,26 +17,7 @@ use Illuminate\Support\Facades\Route;
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
   // Obtener usuario autenticado
-  
-    // Binding de 'user' (debe estar antes de las rutas que lo utilizan)
-
 Route::get('/user/{user}/is_tier_premium', [UserController::class, 'isTierPremium']);
-
-// Route::get('/users/{id}', [UserController::class, 'show']);
-// Route::post('/users', [UserController::class, 'store']);
-// Route::put('/users/{id}', [UserController::class, 'update']);
-// Route::delete('/users/{id}', [UserController::class, 'destroy']);
-
-// Route::get('/followers', [FollowerController::class, 'index']);
-// Route::get('/followers/{id}', [FollowerController::class, 'show']);
-// Route::post('/followers', [FollowerController::class, 'store']);
-// Route::put('/followers/{id}', [FollowerController::class, 'update']);
-// Route::delete('/followers/{id}', [FollowerController::class, 'destroy']);
-
-// Route::get('/posts', [PostController::class, 'index']);
-// Route::get('/posts/{id}', [PostController::class, 'show']);
-
-
 
 // ========================================
 // RUTAS PROTEGIDAS

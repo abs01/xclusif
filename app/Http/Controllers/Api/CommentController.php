@@ -29,13 +29,13 @@ class CommentController extends Controller
     /**
      * GET /api/comments/{comment}
      */
-    public function show(Comment $comment)
-    {
-        $comment->load(['user', 'post']);
+    // public function show(Comment $comment)
+    // {
+    //     $comment->load(['user', 'post']);
 
-        return (new CommentResource($comment))
-            ->additional(['meta' => 'Comentario obtenido correctamente']);
-    }
+    //     return (new CommentResource($comment))
+    //         ->additional(['meta' => 'Comentario obtenido correctamente']);
+    // }
 
     /**
      * POST /api/comments

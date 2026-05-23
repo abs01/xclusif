@@ -25,13 +25,6 @@ class FollowerController extends Controller
         ]);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
 
     /**
      * Store a newly created resource in storage.
@@ -55,46 +48,16 @@ class FollowerController extends Controller
         ], 201);
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        $user = User::findOrFail($id);
-        $followers = $user->followers()->with('tier')->get();
-        return response()->json([
-            'success' => true,
-            'data' => $followers,
-            'message' => 'Followers retrieved successfully'
-        ]);
-    }
+    
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
-    {
-        //
-    }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
-    {
-        $user = auth('sanctum')->user();
-        if (!$user) {
-            return response()->json(['success' => false, 'message' => 'Unauthorized'], 401);
-        }
-        $request->validate([
-            'is_vip' => 'boolean',
-        ]);
-        $user->following()->updateExistingPivot($id, ['is_vip' => $request->is_vip ?? false]);
-        return response()->json([
-            'success' => true,
-            'message' => 'Follower updated successfully'
-        ]);
-    }
+
 
     /**
      * Remove the specified resource from storage.

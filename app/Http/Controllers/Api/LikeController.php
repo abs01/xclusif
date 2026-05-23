@@ -51,35 +51,7 @@ class LikeController extends Controller
         ], 201);
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        $like = Like::with(['user', 'post'])->findOrFail($id);
-
-        return response()->json([
-            'success' => true,
-            'data' => $like,
-            'message' => 'Like retrieved successfully'
-        ]);
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(LikeApiRequest $request, string $id)
-    {
-        $like = Like::findOrFail($id);
-        $like->update(['post_id' => $request->post_id]);
-
-        return response()->json([
-            'success' => true,
-            'data' => $like,
-            'message' => 'Like updated successfully'
-        ]);
-    }
-
+    
     /**
      * Remove the specified resource from storage.
      * DELETE /api/likes/{id}
