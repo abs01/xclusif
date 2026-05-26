@@ -6,6 +6,7 @@ use App\Http\Requests\CommentCRUDRequest;
 use App\Models\Comment;
 use App\Models\Post;
 use App\Models\User;
+use Exception;
 use Illuminate\Http\Request;
 
 class CommentCRUDController extends Controller
@@ -57,7 +58,7 @@ class CommentCRUDController extends Controller
 
             return redirect()->route('commentCRUD.index')
                 ->with('success', 'Comentario eliminado exitosamente');
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return redirect()->route('commentCRUD.index')
                 ->with('error', 'Error al eliminar el comentario: ' . $e->getMessage());
         }

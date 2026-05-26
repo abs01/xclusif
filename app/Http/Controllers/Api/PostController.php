@@ -6,6 +6,7 @@ use App\Http\Requests\GuardarImagenRequest;
 use App\Http\Requests\PostCRUDRequest;
 use App\Models\Post;
 use App\Models\PostMedia;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
 
@@ -129,7 +130,7 @@ try {
         'data'    => $media,
         'message' => 'Imagen subida correctamente'
     ], 201);
-} catch (\Exception $e) {
+} catch (Exception $e) {
     return response()->json([
         'success' => false,
         'message' => 'Error uploading image: ' . $e->getMessage()
