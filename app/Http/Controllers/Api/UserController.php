@@ -139,9 +139,15 @@ public function update(UserApiRequest $request, User $user) // ← User model bi
             $user->following()->detach();
             $user->save();
 
-            return redirect()->route('userCRUD.index')->with('success', 'User deleted successfully');
+            return response()->json([
+                'success' => true,
+                'message' => 'User deleted successfully'
+            ]);
         } catch (Exception $e) {
-            return redirect()->route('userCRUD.index')->with('error', 'Error al eliminar el usuario: ' . $e->getMessage());
+            return response()->json([
+                'success' => false,
+                'message' => 'Error al eliminar el usuario: ' . $e->getMessage()
+            ], 500);
         }
     }
 }

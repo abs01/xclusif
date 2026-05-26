@@ -50,15 +50,19 @@ class FollowerController extends Controller
 
     
 
-    /**
-     * Show the form for editing the specified resource.
+       /**
+     * Display the specified resource.
      */
-
-    /**
-     * Update the specified resource in storage.
-     */
-
-
+    public function show(string $id)
+    {
+        $user = User::findOrFail($id);
+        $followers = $user->followers()->with('tier')->get();
+        return response()->json([
+            'success' => true,
+            'data' => $followers,
+            'message' => 'Followers retrieved successfully'
+        ]);
+    }
     /**
      * Remove the specified resource from storage.
      */
