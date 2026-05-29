@@ -56,9 +56,9 @@ protected $fillable = [
         return $this->hasMany(Like::class);
     }
 
-    public function earnings()
+    public function xcoins()
     {
-        return $this->hasMany(Earning::class);
+        return $this->hasMany(Xcoin::class);
     }
 
     public function followers()

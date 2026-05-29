@@ -48,7 +48,23 @@ class FollowerController extends Controller
         ], 201);
     }
 
-    
+        public function makeVip(string $id)
+    {
+        $user = auth('sanctum')->user();
+        if (!$user) {
+            return response()->json(['success' => false, 'message' => 'Unauthorized'], 401);
+        }
+        $follow = $user->following()->where('following_id', $id)->first();
+        if (!$follow) {
+            return response()->json(['success' => false, 'message' => 'Not following this user'], 400);
+        }
+        $follow->pivot->is_vip = true;
+        $follow->pivot->save();
+        return response()->json([
+            'success' => true,
+            'message' => 'User marked as VIP successfully'
+        ]);
+    }
 
        /**
      * Display the specified resource.
@@ -61,6 +77,17 @@ class FollowerController extends Controller
             'success' => true,
             'data' => $followers,
             'message' => 'Followers retrieved successfully'
+        ]);
+    }
+
+    public function getFollowing(string $id)
+    {
+        $user = User::findOrFail($id);
+        $following = $user->following()->with('tier')->get();
+        return response()->json([
+            'success' => true,
+            'data' => $following,
+            'message' => 'Following retrieved successfully'
         ]);
     }
     /**

@@ -4,7 +4,7 @@
 <div class="container mx-auto py-8">
     <header class="bg-white shadow">
         <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
-            <h1 class="text-2xl font-bold">Detalles del Earning</h1>
+            <h1 class="text-2xl font-bold">Detalles del Xcoin</h1>
         </div>
     </header>
 
@@ -12,9 +12,9 @@
         <div class="mb-6">
             <h2 class="text-xl font-bold text-gray-900 mb-2">Usuario</h2>
             <p class="text-gray-700">
-                @if($earnings->user)
-                    <a href="{{ route('userCRUD.show', $earning->user->id) }}" class="text-blue-500 hover:underline">
-                        {{ $earning->user->name }} ({{ $earning->user->email }})
+                @if($xcoinCRUD->user)
+                    <a href="{{ route('userCRUD.show', $xcoinCRUD->user->id) }}" class="text-blue-500 hover:underline">
+                        {{ $xcoinCRUD->user->name }} ({{ $xcoinCRUD->user->email }})
                     </a>
                 @else
                     <span class="text-gray-500">N/A</span>
@@ -25,9 +25,9 @@
         <div class="mb-6">
             <h2 class="text-xl font-bold text-gray-900 mb-2">Post</h2>
             <p class="text-gray-700">
-                @if($earnings->post)
-                    <a href="{{ route('postCRUD.show', $earnings->post->id) }}" class="text-blue-500 hover:underline">
-                        {{ substr($earnings->post->content, 0, 100) }}...
+                @if($xcoinCRUD->post)
+                    <a href="{{ route('postCRUD.show', $xcoinCRUD->post->id) }}" class="text-blue-500 hover:underline">
+                        {{ substr($xcoinCRUD->post->content, 0, 100) }}...
                     </a>
                 @else
                     <span class="text-gray-500">N/A</span>
@@ -38,11 +38,11 @@
         <div class="grid grid-cols-2 gap-4 mb-6">
             <div>
                 <h3 class="text-sm font-semibold text-gray-600">Fecha de Creación</h3>
-                <p class="text-gray-900">{{ $earnings->created_at->format('M d, Y H:i') }}</p>
+                <p class="text-gray-900">{{ $xcoinCRUD->created_at->format('M d, Y H:i') }}</p>
             </div>
             <div>
                 <h3 class="text-sm font-semibold text-gray-600">Última Actualización</h3>
-                <p class="text-gray-900">{{ $earnings->updated_at->format('M d, Y H:i') }}</p>
+                <p class="text-gray-900">{{ $xcoinCRUD->updated_at->format('M d, Y H:i') }}</p>
             </div>
         </div>
 

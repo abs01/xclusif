@@ -34,8 +34,8 @@ class Post extends Model
         return $this->hasOne(PostMedia::class);
     }
 
-    public function earnings()
+    public function xcoins()
     {
-        return $this->hasMany(Earning::class);
+        return $this->hasMany(Xcoin::class);
     }
 }

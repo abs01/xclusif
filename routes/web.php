@@ -8,7 +8,7 @@ use App\Http\Controllers\UserCRUDController;
 use App\Http\Controllers\CommentCRUDController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\EarningCRUDController;
+use App\Http\Controllers\XcoinCRUDController;
 Route::get('/', function () {
     return view('welcome');
 });
@@ -32,7 +32,7 @@ Route::middleware('auth')->group(function () {
     Route::middleware('CHECK-ROLEADMIN')->group(function () {
         Route::resource('userCRUD', UserCRUDController::class);
  
-        Route::resource('earningCRUD', EarningCRUDController::class)->except('update', 'edit','create','destroy');
+        Route::resource('xcoinCRUD', XcoinCRUDController::class)->except('update', 'edit','create','destroy');
     });
 });
 

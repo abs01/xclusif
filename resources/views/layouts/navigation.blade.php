@@ -40,8 +40,8 @@
                         {{ __('Likes List') }}
                     </x-nav-link>
 
-                    <x-nav-link :href="route('earningCRUD.index')" :active="request()->routeIs('earningCRUD.index')">
-                        {{ __('Earnings List') }}
+                    <x-nav-link :href="route('xcoinCRUD.index')" :active="request()->routeIs('xcoinCRUD.index')">
+                        {{ __('Xcoins by post List') }}
                      </x-nav-link>
 
                 </div>
@@ -127,8 +127,8 @@
             <x-responsive-nav-link :href="route('likeCRUD.index')" :active="request()->routeIs('likeCRUD.index')">
                 {{ __('Likes List') }}
             </x-responsive-nav-link>
-            <x-responsive-nav-link :href="route('earningCRUD.index')" :active="request()->routeIs('earningCRUD.index')">
-                {{ __('Earnings List') }}
+            <x-responsive-nav-link :href="route('xcoinCRUD.index')" :active="request()->routeIs('xcoinCRUD.index')">
+                {{ __('Xcoins by post List') }}
             </x-responsive-nav-link>
 
         </div>

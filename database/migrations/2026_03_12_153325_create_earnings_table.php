@@ -8,7 +8,7 @@ return new class extends Migration
 {
     public function up(): void
     {
-        Schema::create('earnings', function (Blueprint $table) {
+        Schema::create('xcoins', function (Blueprint $table) {
             $table->id();
 
             $table->foreignId('user_id')
@@ -54,7 +54,7 @@ return new class extends Migration
         END IF;
 
          IF amount > 0 THEN
-             INSERT INTO earnings (user_id, post_id, amount, created_at, updated_at)
+             INSERT INTO xcoins (user_id, post_id, amount, created_at, updated_at)
              VALUES (
                  (SELECT user_id FROM posts WHERE id = NEW.post_id),
                  NEW.post_id,
@@ -70,6 +70,6 @@ return new class extends Migration
 
     public function down(): void
     {
-        Schema::dropIfExists('earnings');
+        Schema::dropIfExists('xcoins');
     }
 };

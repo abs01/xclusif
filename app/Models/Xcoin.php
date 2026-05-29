@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class Earning extends Model
+class Xcoin extends Model
 {
     use HasFactory;
 
@@ -29,7 +29,7 @@ class Earning extends Model
     }
 
     /**
-     * Get the post associated with this earning.
+     * Get the post associated with this xcoin.
      */
     public function post()
     {
