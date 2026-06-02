@@ -52,13 +52,9 @@
                 @if($sponsor->file_path)
                     <div class="mb-4">
                         <img src="{{ asset('images/' . $sponsor->file_path) }}" alt="Imagen actual" class="w-full h-auto rounded mb-2 max-h-96">
-                        <form action="{{ route('sponsorCRUD.destroyImage', $sponsor) }}" method="POST" class="inline" onsubmit="return confirm('¿Estás seguro de que deseas eliminar esta imagen?');">
-                            @csrf
-                            @method('DELETE')
-                            <button type="submit" class="bg-red-500 hover:bg-red-700 text-white text-xs font-bold py-1 px-3 rounded">
-                                Eliminar imagen actual
-                            </button>
-                        </form>
+                        <button type="button" class="bg-red-500 hover:bg-red-700 text-white text-xs font-bold py-1 px-3 rounded" onclick="deleteSponsorImage('{{ route('sponsorCRUD.destroyImage', $sponsor) }}')">
+                            Eliminar imagen actual
+                        </button>
                     </div>
                 @endif
                 <input type="file" id="file_path" name="file_path" accept="image/*"

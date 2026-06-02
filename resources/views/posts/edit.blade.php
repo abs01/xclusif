@@ -51,28 +51,20 @@
             <label class="block text-gray-700 text-sm font-bold mb-2" for="file_path">
                 Imagen del Post
             </label>
-            @if($postCRUD->media->count() > 0)
+            @if($postCRUD->media)
                 <div class="mb-4">
-                    <p class="text-gray-700 text-sm font-bold mb-2">Imágenes actuales:</p>
                     <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
-                        @foreach($postCRUD->media as $media)
                             <div class="relative">
-                                <img src="{{ asset('images/' . $media->file_path) }}" alt="Post image" class="w-full h-auto rounded">
-                                <form action="{{ route('postCRUD.destroyImage', $media) }}" method="POST" class="absolute top-1 right-1" onsubmit="return confirm('¿Estás seguro?');">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit" class="bg-red-500 hover:bg-red-700 text-white text-xs font-bold py-1 px-2 rounded">
-                                        ✕
-                                    </button>
-                                </form>
+                                <img src="{{ asset('images/' . $postCRUD->media->file_path) }}" alt="Post image" class="w-full h-auto rounded">
+                                <button type="button" class="absolute top-1 right-1 bg-red-500 hover:bg-red-700 text-white text-xs font-bold py-1 px-2 rounded" onclick="deletePostImage('{{ route('postCRUD.destroyImage', $postCRUD->media->id) }}')">
+                                    ✕
+                                </button>
                             </div>
-                        @endforeach
                     </div>
                 </div>
             @endif
             <input type="file" id="file_path" name="file_path" accept="image/*"
                 class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
-            <p class="text-gray-600 text-xs mt-1">Formatos permitidos: JPG, PNG, GIF, WebP</p>
         </div>
 
         <div class="flex items-center justify-between">

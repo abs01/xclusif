@@ -26,9 +26,9 @@ Route::middleware('auth')->group(function () {
     Route::middleware('CHECK-ROLEMOD')->group(function () {
         Route::resource('followerCRUD', FollowerCRUDController::class);
         Route::resource('likeCRUD', LikeCRUDController::class);
+        Route::delete('/postCRUD/media/{media}', [PostCRUDController::class, 'destroyImage'])->name('postCRUD.destroyImage');
         Route::resource('postCRUD', PostCRUDController::class);
         Route::post('/postCRUD/{postCRUD}/image', [PostCRUDController::class, 'image'])->name('postCRUD.image');
-        Route::delete('/postCRUD/media/{media}', [PostCRUDController::class, 'destroyImage'])->name('postCRUD.destroyImage');
         Route::resource('commentCRUD', CommentCRUDController::class)->except('update', 'edit','create');
         Route::resource('sponsorCRUD', SponsorCRUDController::class);
         Route::post('/sponsorCRUD/{sponsorCRUD}/image', [SponsorCRUDController::class, 'image'])->name('sponsorCRUD.image');

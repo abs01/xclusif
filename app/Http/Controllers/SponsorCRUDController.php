@@ -48,11 +48,7 @@ class SponsorCRUDController extends Controller
     {
         try {
             $validated = $request->validated();
-            
-            // Ensure file_path has a default value
-            if (!isset($validated['file_path'])) {
-                $validated['file_path'] = null;
-            }
+            unset($validated['file_path']);
             
             $sponsor = Sponsors::create($validated);
 
@@ -98,6 +94,7 @@ class SponsorCRUDController extends Controller
     {
         try {
             $validated = $request->validated();
+            unset($validated['file_path']);
             
             $sponsorCRUD->update($validated);
 

@@ -39,6 +39,7 @@ class PostCRUDController extends Controller
     public function store(PostCRUDRequest $request)
     {
         $validated = $request->validated();
+        unset($validated['file_path']);
 
         $post = Post::create($validated);
 
@@ -72,6 +73,7 @@ class PostCRUDController extends Controller
      */
     public function edit(Post $postCRUD)
     {
+        $postCRUD->load(['media']);
         $users = User::orderBy('name','asc')->get();
 
         return view('posts.edit', compact('postCRUD', 'users'));
@@ -83,6 +85,7 @@ class PostCRUDController extends Controller
     public function update(PostCRUDRequest $request, Post $postCRUD)
     {
         $validated = $request->validated();
+        unset($validated['file_path']);
 
         $postCRUD->update($validated);
 
