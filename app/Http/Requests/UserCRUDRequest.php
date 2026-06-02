@@ -30,8 +30,8 @@ class UserCRUDRequest extends FormRequest
         return [
             'name' => $isUpdate ? 'sometimes|string|max:255' : 'required|string|max:255',
             'lastname' => $isUpdate ? 'sometimes|string|max:255' : 'required|string|max:255',
-            'dni' =>  $isUpdate ? 'sometimes|nullable|min:5|max:9|unique:users,dni,' . $userId : 'required|min:5|max:9|unique:users,dni',
-            'email' => $isUpdate ? 'sometimes|nullable|email|min:5|max:255|unique:users,email,' . $userId : 'required|email|min:5|max:255|unique:users,email',
+            'dni' =>  $isUpdate ? 'sometimes|nullable|min:5|max:9': 'required|min:5|max:9|unique:users,dni',
+            'email' => $isUpdate ? 'sometimes|nullable|email|min:5|max:255': 'required|email|min:5|max:255|unique:users,email',
             'phone' => 'nullable|string|max:20',
             'password' => $isUpdate
                 ? 'sometimes|nullable|string|min:8|confirmed'
