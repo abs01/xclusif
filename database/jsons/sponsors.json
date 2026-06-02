@@ -1,0 +1,31 @@
+{
+  "sponsors": {
+    "sponsor": [
+      {
+          "company_name": "Blender",
+          "content": "Empowering Creativity",
+          "file_path": "logo_blender.png",
+          "publicity_url": "https://www.blender.org/"
+      },
+      {
+          "company_name": "OnlyOffice",
+          "content": "Innovating Collaboration",
+          "file_path": "logo_onlyoffice.png",
+          "publicity_url": "https://www.onlyoffice.com/"
+      },
+      {
+          "company_name": "Web Archive",
+          "content": "Preserving Digital History",
+          "file_path": "logo_internet_archive.png",
+          "publicity_url": "https://archive.org/"
+       
+      },
+       {
+          "company_name": "Krita",
+          "content": "Unleashing Artistic Potential",
+          "file_path": "logo_krita.png",
+          "publicity_url": "https://krita.org/"
+       }
+    ]
+  }
+}

@@ -9,6 +9,7 @@ use App\Http\Controllers\CommentCRUDController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\XcoinCRUDController;
+use App\Http\Controllers\SponsorCRUDController;
 Route::get('/', function () {
     return view('welcome');
 });
@@ -26,8 +27,12 @@ Route::middleware('auth')->group(function () {
         Route::resource('followerCRUD', FollowerCRUDController::class);
         Route::resource('likeCRUD', LikeCRUDController::class);
         Route::resource('postCRUD', PostCRUDController::class);
+        Route::post('/postCRUD/{postCRUD}/image', [PostCRUDController::class, 'image'])->name('postCRUD.image');
+        Route::delete('/postCRUD/media/{media}', [PostCRUDController::class, 'destroyImage'])->name('postCRUD.destroyImage');
         Route::resource('commentCRUD', CommentCRUDController::class)->except('update', 'edit','create');
-
+        Route::resource('sponsorCRUD', SponsorCRUDController::class);
+        Route::post('/sponsorCRUD/{sponsorCRUD}/image', [SponsorCRUDController::class, 'image'])->name('sponsorCRUD.image');
+        Route::delete('/sponsorCRUD/{sponsorCRUD}/image', [SponsorCRUDController::class, 'destroyImage'])->name('sponsorCRUD.destroyImage');
     });
     Route::middleware('CHECK-ROLEADMIN')->group(function () {
         Route::resource('userCRUD', UserCRUDController::class);

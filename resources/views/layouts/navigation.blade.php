@@ -44,8 +44,14 @@
                         {{ __('Xcoins by post List') }}
                      </x-nav-link>
 
-                </div>
-            </div>
+                    <x-nav-link :href="route('sponsorCRUD.index')" :active="request()->routeIs('sponsorCRUD.index')">
+                        {{ __('Sponsors List') }}
+                    </x-nav-link>
+
+                    <x-nav-link :href="route('sponsorCRUD.create')" :active="request()->routeIs('sponsorCRUD.create')">
+                        {{ __('Create Sponsor') }}
+                    </x-nav-link>
+
 
             <!-- Settings Dropdown -->
             <div class="hidden sm:flex sm:items-center sm:ms-6">
@@ -129,6 +135,14 @@
             </x-responsive-nav-link>
             <x-responsive-nav-link :href="route('xcoinCRUD.index')" :active="request()->routeIs('xcoinCRUD.index')">
                 {{ __('Xcoins by post List') }}
+            </x-responsive-nav-link>
+
+            <x-responsive-nav-link :href="route('sponsorCRUD.index')" :active="request()->routeIs('sponsorCRUD.index')">
+                {{ __('Sponsors List') }}
+            </x-responsive-nav-link>
+            <x-responsive-nav-link :href="route('sponsorCRUD.create')" :active="
+                request()->routeIs('sponsorCRUD.create')">
+                {{ __('Create Sponsor') }}
             </x-responsive-nav-link>
 
         </div>

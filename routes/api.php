@@ -9,7 +9,7 @@ use App\Http\Controllers\Api\CommentController;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-
+use App\Http\Controllers\Api\SponsorController;
 // ========================================
 // RUTAS PÚBLICAS (sin autenticación)
 // ========================================
@@ -38,6 +38,7 @@ Route::middleware('MULTI-AUTH')->group(function () {
     Route::apiResource('likes', LikeController::class);
     Route::apiResource('comments', CommentController::class);
     Route::apiResource('followers', FollowerController::class);
+    Route::apiResource('sponsors', SponsorController::class);
 
     Route::post('/posts/{post}/image', [PostController::class, 'image']);
     Route::delete('/posts/media/{media}', [PostController::class, 'destroyImage']);

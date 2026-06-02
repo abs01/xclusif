@@ -2,11 +2,6 @@
 
 @section('content')
 <div class="container mx-auto py-8">
-    <header class="bg-white shadow">
-        <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
-            <h1 class="text-2xl font-bold">Detalles del Xcoin</h1>
-        </div>
-    </header>
 
     <div class="bg-white shadow-md rounded-lg p-8 mt-6">
         <div class="mb-6">

@@ -3,10 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Models\Post;
+use App\Models\PostMedia;
 use App\Models\User;
 use Illuminate\Http\Request;
 use App\Http\Requests\PostCRUDRequest;
+use App\Http\Requests\GuardarImagenRequest;
 use Exception;
+use Illuminate\Support\Facades\File;
 
 class PostCRUDController extends Controller
 {
@@ -38,6 +41,18 @@ class PostCRUDController extends Controller
         $validated = $request->validated();
 
         $post = Post::create($validated);
+
+        // Handle file upload if present
+        if ($request->hasFile('file_path')) {
+            $file = $request->file('file_path');
+            $filename = time() . '.' . $file->extension();
+            $file->move(public_path('images'), $filename);
+
+            PostMedia::create([
+                'file_path' => $filename,
+                'post_id' => $post->id,
+            ]);
+        }
 
         return redirect()->route('postCRUD.index')->with('success', 'Post created successfully');
     }
@@ -71,6 +86,18 @@ class PostCRUDController extends Controller
 
         $postCRUD->update($validated);
 
+        // Handle file upload if present
+        if ($request->hasFile('file_path')) {
+            $file = $request->file('file_path');
+            $filename = time() . '.' . $file->extension();
+            $file->move(public_path('images'), $filename);
+
+            PostMedia::create([
+                'file_path' => $filename,
+                'post_id' => $postCRUD->id,
+            ]);
+        }
+
         return redirect()->route('postCRUD.show', $postCRUD)->with('success', 'Post updated successfully');
     }
 
@@ -85,6 +112,51 @@ class PostCRUDController extends Controller
             return redirect()->route('postCRUD.index')->with('success', 'Post deleted successfully');
         } catch (Exception $e) {
             return redirect()->route('postCRUD.index')->with('error', 'Error deleting post: ' . $e->getMessage());
+        }
+    }
+
+    /**
+     * Store an image for the specified post.
+     */
+    public function image(GuardarImagenRequest $request, Post $postCRUD)
+    {
+        try {
+            $file = $request->file('file_path');
+            $filename = time() . '.' . $file->extension();
+            $file->move(public_path('images'), $filename);
+
+            $media = PostMedia::create([
+                'file_path' => $filename,
+                'post_id' => $postCRUD->id,
+            ]);
+
+            return redirect()->route('postCRUD.show', $postCRUD)
+                ->with('success', 'Imagen subida correctamente');
+        } catch (Exception $e) {
+            return redirect()->route('postCRUD.show', $postCRUD)
+                ->with('error', 'Error al subir imagen: ' . $e->getMessage());
+        }
+    }
+
+    /**
+     * Remove an image from storage.
+     */
+    public function destroyImage(PostMedia $media)
+    {
+        try {
+            $mediaPath = public_path('images/' . $media->file_path);
+            if (File::exists($mediaPath)) {
+                File::delete($mediaPath);
+            }
+
+            $postId = $media->post_id;
+            $media->delete();
+
+            return redirect()->route('postCRUD.show', $postId)
+                ->with('success', 'Imagen eliminada correctamente');
+        } catch (Exception $e) {
+            return redirect()->back()
+                ->with('error', 'Error al eliminar imagen: ' . $e->getMessage());
         }
     }
 }

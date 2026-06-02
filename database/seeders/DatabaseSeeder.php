@@ -17,7 +17,7 @@ class DatabaseSeeder extends Seeder
         $this->call(TierSeeder::class);
         $this->call(RoleSeeder::class);
         $this->call(UserSeeder::class);
-
+        $this->call(SponsorSeeder::class);
         $users = User::factory(20)->create();
             $usersIds = User::pluck('id');
          

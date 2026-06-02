@@ -7,11 +7,11 @@
         <p class="mb-4 text-base line-clamp-3">{!! Str::limit($post->content, 100) !!}</p>
         <p class="mb-4 text-sm">created at: {{ $post->created_at->format('M d, Y H:i') }}</p>
         <p class="mb-4 text-sm">updated at: {{ $post->updated_at->format('M d, Y H:i') }}</p>
-         @if ($post->media)
+         {{-- @if ($post->media)
             <p class="mb-4 text-sm">Imagen asociada al Post: 
                 <a href="{{ asset('images/' . $post->media->file_path) }}" class="text-blue-600 hover:text-blue-800 underline">{{ $post->media->first()->file_path }}</a>
             </p>
-        @endif
+         @endif --}}
        
         <!-- Botones de acciones -->
         <a href="{{route('postCRUD.show' , ['postCRUD' => $post->id])}}" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">Show</a>
