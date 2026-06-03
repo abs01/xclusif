@@ -40,7 +40,7 @@
             <p class="text-gray-700 whitespace-pre-wrap">{{ $comments->content }}</p>
         </div>
 
-        <div class="grid grid-cols-2 gap-4 mb-6">
+         <div class="grid grid-cols-2 gap-4 mb-6">
             <div>
                 <h3 class="text-sm font-semibold text-gray-600">Fecha de Creación</h3>
                 <p class="text-gray-900">{{ $comments->created_at->format('M d, Y H:i') }}</p>
@@ -49,7 +49,7 @@
                 <h3 class="text-sm font-semibold text-gray-600">Última Actualización</h3>
                 <p class="text-gray-900">{{ $comments->updated_at->format('M d, Y H:i') }}</p>
             </div>
-        </div>
+        </div> 
     </div>
 </div>
 @endsection

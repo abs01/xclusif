@@ -37,11 +37,11 @@ class CommentCRUDController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Comment $comments)
-    {
-            $comments->load(['user', 'post']);
-        return view('comments.show', compact('comments'));
-    }
+  public function show(Comment $commentCRUD)
+{
+    $commentCRUD->load(['user', 'post']);
+    return view('comments.show', ['comments' => $commentCRUD]);
+}
 
     /**
      * Show the form for editing the specified resource.
@@ -51,16 +51,15 @@ class CommentCRUDController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Comment $comments)
-    {
-        try {
-            $comments->delete();
-
-            return redirect()->route('commentCRUD.index')
-                ->with('success', 'Comentario eliminado exitosamente');
-        } catch (Exception $e) {
-            return redirect()->route('commentCRUD.index')
-                ->with('error', 'Error al eliminar el comentario: ' . $e->getMessage());
-        }
+public function destroy(Comment $commentCRUD)
+{
+    try {
+        $commentCRUD->delete();
+        return redirect()->route('commentCRUD.index')
+            ->with('success', 'Comentario eliminado exitosamente');
+    } catch (Exception $e) {
+        return redirect()->route('commentCRUD.index')
+            ->with('error', 'Error al eliminar el comentario: ' . $e->getMessage());
     }
+}
 }
