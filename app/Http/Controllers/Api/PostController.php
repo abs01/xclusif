@@ -137,23 +137,6 @@ try {
     ], 500);
 }
 } 
-/**
-     * Remove an image from storage.
-     */
-  public function destroyImage(PostMedia $media)
-{
-    $mediaPath = public_path('images/' . $media->file_path);
-    if (File::exists($mediaPath)) {
-        File::delete($mediaPath);
-    }
-
-    $media->delete();
-
-    return response()->json([
-        'success' => true,
-        'message' => 'Imagen eliminada correctamente'
-    ]);
-}
 
     /**
      * Remove the specified resource from storage.

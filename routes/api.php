@@ -41,7 +41,6 @@ Route::middleware('MULTI-AUTH')->group(function () {
     Route::apiResource('followers', FollowerController::class);
 
     Route::post('/posts/{post}/image', [PostController::class, 'image']);
-    Route::delete('/posts/media/{media}', [PostController::class, 'destroyImage']);
     Route::post('/followers/{id}/make-vip', [FollowerController::class, 'makeVip']);    
     Route::get('/followers/{id}/following', [FollowerController::class, 'getFollowing']);
     Route::middleware('CHECK-ROLEADMIN')->group(function () {

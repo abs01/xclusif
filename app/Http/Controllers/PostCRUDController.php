@@ -141,25 +141,5 @@ class PostCRUDController extends Controller
         }
     }
 
-    /**
-     * Remove an image from storage.
-     */
-    public function destroyImage(PostMedia $media)
-    {
-        try {
-            $mediaPath = public_path('images/' . $media->file_path);
-            if (File::exists($mediaPath)) {
-                File::delete($mediaPath);
-            }
 
-            $postId = $media->post_id;
-            $media->delete();
-
-            return redirect()->route('postCRUD.show', $postId)
-                ->with('success', 'Imagen eliminada correctamente');
-        } catch (Exception $e) {
-            return redirect()->back()
-                ->with('error', 'Error al eliminar imagen: ' . $e->getMessage());
-        }
-    }
 }

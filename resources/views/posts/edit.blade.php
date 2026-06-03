@@ -56,9 +56,9 @@
                     <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
                             <div class="relative">
                                 <img src="{{ asset('images/' . $postCRUD->media->file_path) }}" alt="Post image" class="w-full h-auto rounded">
-                                <button type="button" class="absolute top-1 right-1 bg-red-500 hover:bg-red-700 text-white text-xs font-bold py-1 px-2 rounded" onclick="deletePostImage('{{ route('postCRUD.destroyImage', $postCRUD->media->id) }}')">
+                                {{-- <button type="button" class="absolute top-1 right-1 bg-red-500 hover:bg-red-700 text-white text-xs font-bold py-1 px-2 rounded" onclick="deletePostImage('{{ route('postCRUD.destroyImage', $postCRUD->media->id) }}')">
                                     ✕
-                                </button>
+                                </button> --}}
                             </div>
                     </div>
                 </div>
