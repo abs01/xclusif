@@ -18,6 +18,7 @@ Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
   // Obtener usuario autenticado
 Route::get('/user/{user}/is_tier_premium', [UserController::class, 'isTierPremium']);
+    Route::apiResource('sponsors', SponsorController::class)->except('update', 'edit','create','destroy');
 
 // ========================================
 // RUTAS PROTEGIDAS
@@ -38,7 +39,6 @@ Route::middleware('MULTI-AUTH')->group(function () {
     Route::apiResource('likes', LikeController::class);
     Route::apiResource('comments', CommentController::class);
     Route::apiResource('followers', FollowerController::class);
-    Route::apiResource('sponsors', SponsorController::class);
 
     Route::post('/posts/{post}/image', [PostController::class, 'image']);
     Route::delete('/posts/media/{media}', [PostController::class, 'destroyImage']);

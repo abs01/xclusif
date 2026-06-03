@@ -56,9 +56,9 @@ class DatabaseSeeder extends Seeder
                 }}
 
                 // Crear media para cada post
-                $mediaCount = rand(1,3);
+                $mediaCount = rand(1,20);
 
-                if ($mediaCount == 3) {
+                if ($mediaCount == 4) {
                     PostMedia::factory()->create([
                         'post_id' => $post->id,
                         'file_path' => fake()->numberBetween(1, 4) . '.jpg',
