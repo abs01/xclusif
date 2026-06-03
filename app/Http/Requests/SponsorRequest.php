@@ -25,10 +25,9 @@ class SponsorRequest extends FormRequest
         return [
             'company_name' => 'required|string|max:255',
             'content' => 'required|string|max:1000',
-            'file_path' => 'nullable|image|max:5120',
-
             'publicity_url' => 'nullable|url',
-            'is_active' => 'required|boolean',
+            'is_active' => 'boolean',
+            'file_path' => 'nullable|image|max:5120',
         ];
     }
 
@@ -40,7 +39,6 @@ class SponsorRequest extends FormRequest
             'content.required' => 'El contenido es requerido',
             'content.max' => 'El contenido no debe exceder 1000 caracteres',
             'publicity_url.url' => 'La URL debe ser válida',
-            'is_active.required' => 'El estado es requerido',
             'is_active.boolean' => 'El estado debe ser verdadero o falso',
         ];
     }

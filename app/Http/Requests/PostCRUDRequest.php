@@ -26,12 +26,10 @@ class PostCRUDRequest extends FormRequest
         return [
             'user_id' => 'required|exists:users,id',
             'content' => 'required|string',
-            'file_path' => 'nullable|image|max:5120',
         ];
-    }
 
         
-    
+    }
 
         // Mensajes personalizados de error
     public function messages() { 

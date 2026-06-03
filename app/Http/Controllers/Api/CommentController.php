@@ -80,17 +80,16 @@ class CommentController extends Controller
     /**
      * DELETE /api/comments/{comment}
      */
-    public function destroy(Comment $comment)
-    {
-        // Only allow the owner (or admin) to delete
-        $userId = auth('sanctum')->id();
-        if ($comment->user_id !== $userId) {
-            return response()->json(['message' => 'No autorizado'], 403);
-        }
-
-        $comment->delete();
-
-        return response()->json(['meta' => 'Comentario eliminado correctamente']);
+public function destroy(Comment $comment)
+{
+    $userId = auth('sanctum')->id();
+    if ($comment->user_id !== $userId) {
+        return response()->json(['message' => 'No autorizado'], 403);
     }
+
+    $comment->update(['content' => 'este comentario ha sido eliminado']);
+
+    return response()->json(['meta' => 'Comentario eliminado correctamente']);
+}
 
 }

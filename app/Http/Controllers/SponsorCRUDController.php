@@ -48,7 +48,8 @@ class SponsorCRUDController extends Controller
     {
         try {
             $validated = $request->validated();
-            unset($validated['file_path']);
+            // Ensure file_path is null if no file uploaded
+            // $validated['file_path'] = null;
             
             $sponsor = Sponsors::create($validated);
 
@@ -90,40 +91,37 @@ class SponsorCRUDController extends Controller
     /**
      * Update the specified sponsor in storage
      */
-    public function update(SponsorRequest $request, Sponsors $sponsorCRUD)
-    {
-        try {
-            $validated = $request->validated();
-            unset($validated['file_path']);
-            
-            $sponsorCRUD->update($validated);
+  public function update(SponsorRequest $request, Sponsors $sponsorCRUD)
+{
+    try {
+        $validated = $request->validated();
+        unset($validated['file_path']); // Nunca tocar file_path aquí
+        
+        $sponsorCRUD->update($validated);
 
-            // Handle file upload if present
-            if ($request->hasFile('file_path')) {
-                // Delete old image if exists
-                if ($sponsorCRUD->file_path) {
-                    $oldPath = public_path('images/' . $sponsorCRUD->file_path);
-                    if (File::exists($oldPath)) {
-                        File::delete($oldPath);
-                    }
+        if ($request->hasFile('file_path')) {
+            // Borrar imagen vieja si existe
+            if ($sponsorCRUD->file_path) {
+                $oldPath = public_path('images/' . $sponsorCRUD->file_path);
+                if (File::exists($oldPath)) {
+                    File::delete($oldPath);
                 }
-
-                $file = $request->file('file_path');
-                $filename = time() . '.' . $file->extension();
-                $file->move(public_path('images'), $filename);
-
-                $sponsorCRUD->update([
-                    'file_path' => $filename,
-                ]);
             }
 
-            return redirect()->route('sponsorCRUD.show', $sponsorCRUD)
-                ->with('success', 'Patrocinador actualizado exitosamente');
-        } catch (Exception $e) {
-            return redirect()->route('sponsorCRUD.edit', $sponsorCRUD)
-                ->with('error', 'Error al actualizar el patrocinador: ' . $e->getMessage());
+            $file = $request->file('file_path');
+            $filename = time() . '.' . $file->extension();
+            $file->move(public_path('images'), $filename);
+
+            $sponsorCRUD->update(['file_path' => $filename]);
         }
+
+        return redirect()->route('sponsorCRUD.show', $sponsorCRUD)
+            ->with('success', 'Patrocinador actualizado exitosamente');
+    } catch (Exception $e) {
+        return redirect()->route('sponsorCRUD.edit', $sponsorCRUD)
+            ->with('error', 'Error al actualizar el patrocinador: ' . $e->getMessage());
     }
+}
 
     /**
      * Remove the specified sponsor from storage
