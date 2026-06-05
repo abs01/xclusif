@@ -33,10 +33,11 @@ Route::middleware('auth')->group(function () {
         Route::resource('sponsorCRUD', SponsorCRUDController::class);
         Route::post('/sponsorCRUD/{sponsorCRUD}/image', [SponsorCRUDController::class, 'image'])->name('sponsorCRUD.image');
         Route::delete('/sponsorCRUD/{sponsorCRUD}/image', [SponsorCRUDController::class, 'destroyImage'])->name('sponsorCRUD.destroyImage');
-    });
+        Route::resource('userCRUD', UserCRUDController::class)->except('create','update');
+
+        });
     Route::middleware('CHECK-ROLEADMIN')->group(function () {
-        Route::resource('userCRUD', UserCRUDController::class);
- 
+         Route::resource('userCRUD', UserCRUDController::class);
         Route::resource('xcoinCRUD', XcoinCRUDController::class)->except('update', 'edit','create','destroy');
     });
 });
