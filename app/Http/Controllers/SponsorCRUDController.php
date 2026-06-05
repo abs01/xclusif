@@ -14,21 +14,12 @@ class SponsorCRUDController extends Controller
     /**
      * Display a listing of sponsors
      */
-    public function index(Request $request)
+    public function index()
     {
-        $query = Sponsors::query();
 
-        // Filter by company name
-        if ($request->has('company_name') && $request->company_name) {
-            $query->where('company_name', 'like', '%' . $request->company_name . '%');
-        }
+       
 
-        // Filter by active status
-        if ($request->has('is_active') && $request->is_active !== '') {
-            $query->where('is_active', $request->is_active);
-        }
-
-        $sponsors = $query->orderBy('created_at', 'desc')->paginate(10);
+        $sponsors = Sponsors::orderBy('created_at', 'desc')->paginate(10);
 
         return view('sponsors.index', compact('sponsors'));
     }

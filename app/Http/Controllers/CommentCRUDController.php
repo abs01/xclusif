@@ -14,19 +14,11 @@ class CommentCRUDController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(Request $request)
+    public function index()
     {
         $query = Comment::with(['user', 'post']);
 
-        // Filter by user
-        if ($request->has('user_id') && $request->user_id) {
-            $query->where('user_id', $request->user_id);
-        }
 
-        // Filter by post
-        if ($request->has('post_id') && $request->post_id) {
-            $query->where('post_id', $request->post_id);
-        }
 
         $comments = $query->orderBy('created_at', 'desc')->paginate(10);
 
