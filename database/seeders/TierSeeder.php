@@ -17,13 +17,13 @@ class TierSeeder extends Seeder
         Tier::create([
             'name' => 'gold',
             'monetization' => true,
-            'comments_required' => 50
+            'interactions_required' => 50
         ]);
 
         Tier::create([
             'name' => 'diamond',
             'monetization' => true,
-            'comments_required' => 25
+            'interactions_required' => 25
         ]);
     }
 }

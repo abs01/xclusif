@@ -36,7 +36,7 @@ return new class extends Migration
          FROM users
          WHERE id = NEW.user_id;
 
-         SELECT comments_required INTO pay
+         SELECT interactions_required INTO pay
          FROM tiers
          WHERE id = user_tier_id;
 
@@ -46,11 +46,7 @@ return new class extends Migration
         
 
         IF monetization_flag > 0 THEN
-             IF user_tier_id = 2 THEN
-                 SET amount = 1/pay + 0.3;
-             ELSEIF user_tier_id = 3 THEN
                  SET amount = 1/pay;
-             END IF;
         END IF;
 
          IF amount > 0 THEN

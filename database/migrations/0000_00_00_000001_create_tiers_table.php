@@ -12,7 +12,7 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->boolean('monetization')->default(false);
-            $table->integer('comments_required')->nullable();
+            $table->integer('interactions_required')->nullable();
             $table->timestamps();
         });
     }

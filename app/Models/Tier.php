@@ -12,7 +12,7 @@ class Tier extends Model
     protected $fillable = [
         'name',
         'monetization',
-        'comments_required'
+        'interactions_required'
     ];
 
     public function users()
