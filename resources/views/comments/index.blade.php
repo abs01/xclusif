@@ -13,23 +13,12 @@
         </div>
     @endif
 
-   
+    
 
-    <!-- Comments List -->
-     <!-- Posts List -->
+    <!-- Posts List -->
     <div class="grid gap-0 bg-white">
-        @forelse($comments as $comment)
-            @each('components.card-comment',$comments,'comment')
-        @empty
-            <div class="bg-white shadow-md rounded-lg p-8 text-center">
-                <p class="mt-4 text-gray-500">No se encontraron comentarios</p>
-                @if(request()->hasAny(['search', 'user_id']))
-                    <a href="{{ route('commentCRUD.index') }}" class="mt-2 inline-block text-blue-500 hover:text-blue-700">
-                        Ver todos los comentarios
-                    </a>
-                @endif
-            </div>
-        @endforelse
+        @each('components.card-comment',$comments,'comment')
+ 
     </div>
 
     <!-- Pagination -->

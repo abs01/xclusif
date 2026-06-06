@@ -13,26 +13,17 @@
         </div>
     @endif
 
-  <div class="grid gap-0 bg-white">        
     
-    @forelse($xcoins as $xcoin)
-            @each('components.card-xcoin',$xcoins,'xcoin');
-        @empty
-            <div class="bg-white shadow-md rounded-lg p-8 text-center">
 
-                <p class="mt-4 text-gray-500">No se encontraron xcoins</p>
-                @if(request()->hasAny(['search', 'role_id', 'status']))
-                    <a href="{{ route('xcoinCRUD.index') }}" class="mt-2 inline-block text-blue-500 hover:text-blue-700">
-                        Ver todos los xcoins
-                    </a>
-                @endif
-            </div>
-    @endforelse
-</div>
+    <!-- Posts List -->
+    <div class="grid gap-0 bg-white">
+        @each('components.card-xcoin',$xcoins,'xcoin')
+ 
+    </div>
 
     <!-- Pagination -->
-    {{-- <div class="mt-6">
-        {{ $likes->appends(request()->query())->links() }}
-    </div> --}}
+    <div class="mt-6">
+        {{ $xcoins->appends(request()->query())->links() }}
+    </div>
 </div>
 @endsection

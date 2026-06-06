@@ -20,37 +20,36 @@ class UserApiRequest extends FormRequest
     /**
      * Get the user ID from the route, handling both model binding and raw string.
      */
-    private function getRouteUserId(): ?int
-    {
-        $user = $this->route('user');
+    // private function getRouteUserId(): ?int
+    // {
+    //     $user = $this->route('user');
 
-        if ($user instanceof User) {
-            return $user->id;
-        }
+    //     if ($user instanceof User) {
+    //         return $user->id;
+    //     }
 
-        if (is_numeric($user)) {
-            return (int) $user;
-        }
+    //     if (is_numeric($user)) {
+    //         return (int) $user;
+    //     }
 
-        return null;
-    }
+    //     return null;
+    // }
 
     /**
      * Get the validation rules that apply to the request.
      */
     public function rules(): array
     {
-        $userId   = $this->getRouteUserId();
         $isUpdate = $this->isMethod('PUT') || $this->isMethod('PATCH');
 
         return [
             'name'      => $isUpdate ? 'sometimes|string|max:255'     : 'required|string|max:255',
             'lastname'  => $isUpdate ? 'sometimes|string|max:255'     : 'required|string|max:255',
             'dni'       => $isUpdate
-                            ? 'sometimes|nullable|min:5|max:9' . $userId
+                            ? 'sometimes|nullable|min:5|max:9'
                             : 'required|min:5|max:9|unique:users,dni',
             'email'     => $isUpdate
-                            ? 'sometimes|nullable|email|max:255' . $userId
+                            ? 'sometimes|nullable|email|max:255'
                             : 'required|email|max:255|unique:users,email',
             'phone'     => 'nullable|string|max:20',
             'password'  => $isUpdate

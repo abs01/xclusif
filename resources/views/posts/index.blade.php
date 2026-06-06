@@ -17,18 +17,8 @@
 
     <!-- Posts List -->
     <div class="grid gap-0 bg-white">
-        @forelse($posts as $post)
-            @each('components.card-post',$posts,'post')
-        @empty
-            <div class="bg-white shadow-md rounded-lg p-8 text-center">
-                <p class="mt-4 text-gray-500">No se encontraron posts</p>
-                @if(request()->hasAny(['search', 'user_id']))
-                    <a href="{{ route('postCRUD.index') }}" class="mt-2 inline-block text-blue-500 hover:text-blue-700">
-                        Ver todos los posts
-                    </a>
-                @endif
-            </div>
-        @endforelse
+        @each('components.card-post',$posts,'post')
+ 
     </div>
 
     <!-- Pagination -->
