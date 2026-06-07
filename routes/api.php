@@ -10,6 +10,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\SponsorController;
+use App\Http\Controllers\Api\XcoinController;
 // ========================================
 // RUTAS PÚBLICAS (sin autenticación)
 // ========================================
@@ -29,7 +30,8 @@ Route::get('/user/{user}/is_tier_premium', [UserController::class, 'isTierPremiu
 
 Route::middleware('MULTI-AUTH')->group(function () {
     Route::post('/logout', [AuthController::class, 'logout']);
-    
+        Route::apiResource('xcoins', XcoinController::class)->except('update', 'edit','create','destroy');
+
     // Users routes
     Route::get('/users', [UserController::class, 'index']);
     Route::post('/users', [UserController::class, 'store']);
