@@ -22,7 +22,7 @@ class SponsorSeeder extends Seeder
                 'content' => $sponsor['content'],
                 'file_path' => $sponsor['file_path'],
                 'publicity_url' => $sponsor['publicity_url'],
-                'is_active' => false, 
+                'is_active' => true, // Puedes ajustar esto según tus necesidades en el backoffice
             ]);
         }
     }
