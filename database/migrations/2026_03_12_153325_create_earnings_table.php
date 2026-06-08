@@ -43,7 +43,9 @@ BEGIN
   IF already_rewarded = 0 THEN
     SELECT p.user_id INTO post_owner_id
     FROM posts p
-    WHERE p.id = NEW.post_id;
+    WHERE p.id = NEW.post_id
+    AND p.user_id != NEW.user_id; -- Evitar recompensar al usuario que se gusta a sí mismo
+    
 
     SELECT tier_id INTO user_tier_id FROM users WHERE id = post_owner_id;
     SELECT interactions_required INTO pay FROM tiers WHERE id = user_tier_id;
