@@ -17,6 +17,7 @@ class CheckRoleMod
             return response()->json(['message' => 'No autenticat'], 401);
         }
 
+        // Admin tiene acceso a todo, así que se verifica primeros
         if (!Auth::user()->isMod() && !Auth::user()->isAdmin()) {
             return response()->json(['message' => 'Accés denegat: permisos insuficients, eres mod'], 403);
         }
