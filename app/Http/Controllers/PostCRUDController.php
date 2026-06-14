@@ -121,25 +121,25 @@ class PostCRUDController extends Controller
     /**
      * Store an image for the specified post.
      */
-    public function image(GuardarImagenRequest $request, Post $postCRUD)
-    {
-        try {
-            $file = $request->file('file_path');
-            $filename = time() . '.' . $file->extension();
-            $file->move(public_path('images'), $filename);
+    // public function image(GuardarImagenRequest $request, Post $postCRUD)
+    // {
+    //     try {
+    //         $file = $request->file('file_path');
+    //         $filename = time() . '.' . $file->extension();
+    //         $file->move(public_path('images'), $filename);
 
-            $media = PostMedia::create([
-                'file_path' => $filename,
-                'post_id' => $postCRUD->id,
-            ]);
+    //         $media = PostMedia::create([
+    //             'file_path' => $filename,
+    //             'post_id' => $postCRUD->id,
+    //         ]);
 
-            return redirect()->route('postCRUD.show', $postCRUD)
-                ->with('success', 'Imagen subida correctamente');
-        } catch (Exception $e) {
-            return redirect()->route('postCRUD.show', $postCRUD)
-                ->with('error', 'Error al subir imagen: ' . $e->getMessage());
-        }
-    }
+    //         return redirect()->route('postCRUD.show', $postCRUD)
+    //             ->with('success', 'Imagen subida correctamente');
+    //     } catch (Exception $e) {
+    //         return redirect()->route('postCRUD.show', $postCRUD)
+    //             ->with('error', 'Error al subir imagen: ' . $e->getMessage());
+    //     }
+    // }
 
 
 }

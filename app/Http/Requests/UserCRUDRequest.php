@@ -24,7 +24,6 @@ class UserCRUDRequest extends FormRequest
 
         // Get the user ID from the route for unique ignore on updates
         //Error attempt to read property "id on string"
-        $userId = $this->route('user') ? $this->route('user')->id : null;
         $isUpdate = $this->isMethod('PUT') || $this->isMethod('PATCH');
 
         return [
